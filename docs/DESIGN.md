@@ -19,13 +19,14 @@ An editorial technology studio. Cool ice and blue-grey fields, slate text, a res
 | Light copper | `#D89570` | Link text on dark slate only |
 | Brand blue | `#89B6D5` | Accents on dark slate (the fill from the public favicon). Not small text on light backgrounds |
 | White | `#FCFDFE` | Labels on copper buttons |
-| Divider | `#CAD5DE` | Rules and field borders |
+| Divider | `#CAD5DE` | Decorative rules and dividers |
+| Form border | `#465D6E` | Input and textarea borders only. Same value as slate soft |
 | Danger | `#7A1E12` | Form errors. Kept distinct from copper |
 | Photo matte | `#123F4A` | Well Aware image well only |
 
 Measured pairs used for this palette: slate on ice 11.19:1, secondary slate on ice 6.29:1, copper on ice 5.24:1, white on copper 5.63:1, deep teal on pale teal 6.63:1, light copper on slate 4.93:1, brand blue on slate 5.67:1. Copper on pale teal is 4.83:1. White on copper hover is 8.16:1. Danger on ice is 9.49:1. Those ratios are contrast math for these hex pairs, not an axe run.
 
-The packages already in the lockfile are Fraunces for the large headlines, Source Sans 3 for text, and IBM Plex Mono for small uppercase eyebrows. They are self-hosted dependencies. The interface still has to import them. This lane did not verify that a page loads them.
+Fraunces, Source Sans 3, and IBM Plex Mono are imported from the self-hosted lockfile packages in the first five lines of `client/src/styles.css`.
 
 ## Layout
 

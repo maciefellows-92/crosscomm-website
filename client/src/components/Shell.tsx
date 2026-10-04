@@ -21,6 +21,7 @@ export function Shell() {
   }, [pathname]);
   const toggleRef = useRef<HTMLButtonElement>(null);
   const menuRef = useRef<HTMLElement>(null);
+  const headerRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
     const onResize = () => {
@@ -29,6 +30,27 @@ export function Shell() {
     window.addEventListener("resize", onResize);
     return () => window.removeEventListener("resize", onResize);
   }, [setOpen]);
+
+  useEffect(() => {
+    if (!open) return;
+    const header = headerRef.current;
+    const menu = menuRef.current;
+    if (!header || !menu) return;
+    const place = () => {
+      const bottom = header.getBoundingClientRect().bottom;
+      menu.style.setProperty("--nav-top", `${bottom}px`);
+      menu.dataset.placed = "true";
+    };
+    place();
+    window.addEventListener("resize", place);
+    window.addEventListener("scroll", place, { passive: true });
+    return () => {
+      window.removeEventListener("resize", place);
+      window.removeEventListener("scroll", place);
+      menu.style.removeProperty("--nav-top");
+      delete menu.dataset.placed;
+    };
+  }, [open]);
 
   useEffect(() => {
     if (!open) return;
@@ -69,7 +91,7 @@ export function Shell() {
           CrossComm website preview
         </p>
       )}
-      <header className="site-header">
+      <header ref={headerRef} className="site-header">
         <div className="wrap header-inner">
           <Logo />
           <button
