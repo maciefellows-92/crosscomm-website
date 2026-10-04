@@ -29,14 +29,8 @@ export function Arrow() {
 
 export function Logo() {
   return (
-    <Link to="/" className="logo">
-      <span className="mark" aria-hidden="true">
-        <span />
-        <span />
-        <span />
-        <span />
-      </span>
-      <span className="logo-word">CrossComm</span>
+    <Link to="/" className="logo" aria-label="CrossComm home">
+      <img src="/logo.png" width={676} height={129} alt="" />
     </Link>
   );
 }

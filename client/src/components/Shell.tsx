@@ -117,7 +117,7 @@ export function Shell() {
       <footer className="site-footer">
         <div className="wrap footer-grid">
           <div>
-            <p className="footer-word">CrossComm</p>
+            <Logo />
             <p className="tagline">{siteConfig.tagline}</p>
           </div>
           <div>

@@ -91,12 +91,15 @@ Rights: these are the client's public case-study images, copied for this private
 
 ## Mark and social image
 
-| File | What it is | What it is not |
-| --- | --- | --- |
-| `client/public/favicon.svg` | A four-square geometric cross drawn for this review site | Not a file from a CrossComm brand kit |
-| `client/public/og.png` | A wordmark made for this review site, for the social image | Not a customer photograph and not an approved logo |
+Retrieved 4 October 2026 from the public CrossComm site. The logo and favicon bytes in `client/public/` match those downloads.
 
-Brand approval is owner-pending. See [DESIGN.md](DESIGN.md).
+| File | What it is | Source |
+| --- | --- | --- |
+| `client/public/logo.png` | White wordmark, 676×129, transparent. SHA-256 `fd52d50fbd791e3d573805f751481557250302e24630257d3c5c978484346b2d` | https://www.crosscomm.com/static/logo-e50bf70c07330d3e8bd6faa9e01f5692.png |
+| `client/public/favicon.svg` | Browser icon. SHA-256 `265639c9bcdc851fd4e811bc566375bc49b70abe774080ced303ed731305e333`. One fill `#89B6D5` | https://www.crosscomm.com/favicon.svg |
+| `client/public/og.png` | 1200×630 card rendered offline from `scripts/og-card.html` using the logo file above, unchanged | Not a separate brand download |
+
+https://www.crosscomm.com/favicon-32x32.png was retrieved as a reference and is not shipped. Do not redraw the wordmark. See [DESIGN.md](DESIGN.md).
 
 ## What was not used as a source
 
