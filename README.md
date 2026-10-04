@@ -6,13 +6,13 @@ The other known CrossComm URLs are listed and left alone. They are not redirecte
 
 ## Reviewing and editing
 
-Ask Mark Hinkle to invite your GitHub username to the private repository `mrhinkle/crosscomm-website`, and to the Vercel project if you need the hosting dashboard. Write access is enough to open a branch and a pull request. The repository and the Vercel project already exist. Nothing in this folder grants that invite by itself.
+Ask Mark Hinkle for two invites if you cannot already open the site. Your GitHub username is for the private repository `mrhinkle/crosscomm-website`. The identity on your Vercel account is for the protected preview. GitHub access alone does not open https://crosscomm-website.vercel.app. Viewing the preview is separate from permission to edit the hosting dashboard. Write access on the repo is enough to open a branch and a pull request. Nothing in this folder grants either invite.
 
 Once you can open the repo:
 
 1. Read a page against the live CrossComm page it came from. [docs/CONTENT-GUIDE.md](docs/CONTENT-GUIDE.md) says where each sentence lives.
 2. Change the typed record, not a generated HTML file. Open a pull request. Someone else reviews it. [docs/FEEDBACK.md](docs/FEEDBACK.md) is the same loop when the note starts from the on-page report.
-3. Review the preview and wait for a green quality check before you merge. After merge, confirm the hosted deployment and that `version.json` matches the commit. [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md) covers hosting, rollback, and a later domain move.
+3. Before merge, compare the preview `version.json` and the Vercel Git metadata with the current pull-request head, and wait for a green `quality` check on that head. After merge, compare production `version.json` with the `main` SHA. [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md) covers hosting, rollback, and a later domain move. [docs/RELEASE-EVIDENCE.md](docs/RELEASE-EVIDENCE.md) is the bootstrap receipt.
 4. [docs/MACIE-HANDOFF.md](docs/MACIE-HANDOFF.md) is the longer reading guide. [docs/BACKLOG.md](docs/BACKLOG.md) is what is still a decision, not a defect in the pages you can click.
 
 ## Running it locally
@@ -45,8 +45,6 @@ Typed copy and routes, the pages, pictures in `client/public/`, the build, tests
 
 ## Status on 4 October 2026
 
-| Checked on this machine | 30 unit tests passed. Lint, the production build, prerender smoke, and actionlint passed. On the built site, the 15 known pages loaded on a 1440px desktop and a 390px phone with no sideways scroll and no console errors. Contact and the work filters passed. |
-| Still in progress | The repaired browser suite, Claude's visual review, a remote GitHub Actions run, and a check of the hosted Vercel deployment. Those results are not in yet. Do not treat this table as a green remote deploy. |
-| Still an owner decision | Your GitHub username on the repo, legal pages, permission for the case-study photographs, analytics, DNS, and whether this host should ever be indexed. |
+The bootstrap receipt is [docs/RELEASE-EVIDENCE.md](docs/RELEASE-EVIDENCE.md), for `024ed0c303bcf294a828b0bd4c8ab70c4370ec95` only. The protected review URL is https://crosscomm-website.vercel.app. Macie's GitHub and Vercel invites are still pending. Legal pages, photograph permission, lead delivery, analytics, DNS, and indexing this host are still owner decisions. A later documentation change does not inherit this receipt.
 
 Do not put secrets, `.env` files, or customer legal text in this repo.

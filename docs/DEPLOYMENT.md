@@ -1,12 +1,12 @@
 # Deployment
 
-4 October 2026. The handoff names the GitHub repository `mrhinkle/crosscomm-website` and a Vercel project. This checkout has not recorded a pushed commit, a green remote Actions run, or a hosted deployment receipt. Those stay pending until the coordinator attaches them. Do not treat this file as proof that CI or a deploy already passed. This file is how you publish a change, roll one back, and, later, attach a domain. It does not change DNS.
+4 October 2026. The repository is `mrhinkle/crosscomm-website`. The protected review site is https://crosscomm-website.vercel.app. The bootstrap receipt, including the Actions run and deployment id, is [RELEASE-EVIDENCE.md](RELEASE-EVIDENCE.md). This file is how you publish a change, roll one back, and, later, attach a domain. It does not change DNS. A later pull request is not covered by that receipt until its own evidence is written down.
 
 ## Release a change
 
 1. Open a pull request from a branch. Do not edit `main` directly.
-2. Before merge, read the preview URL Vercel comments on the pull request and confirm the page you changed. Also read the GitHub quality check. A green preview does not mean the tests passed, and a green test run does not by itself hold the deploy. Both the preview review and a green quality check come before merge. That is the team's rule until branch protection is confirmed.
-3. After merge, open the production deployment and confirm the same page. `version.json` on that deployment is the commit SHA. Check that SHA only after merge.
+2. Before merge, open the pull-request preview and confirm the page you changed. Compare that preview's `version.json` and the Vercel Git metadata with the current pull-request head. If Actions tested a synthetic merge commit, write that SHA down separately and do not treat it as the branch head. Wait for the `quality` check on the commit you are merging. A green preview does not mean the tests passed.
+3. After merge, open the production deployment and compare `version.json` with the `main` SHA, which can differ from the pull-request head. The bootstrap comparison is in [RELEASE-EVIDENCE.md](RELEASE-EVIDENCE.md).
 
 ## What is already configured
 
@@ -29,9 +29,11 @@ The release written into `version.json` is `VERCEL_GIT_COMMIT_SHA`, then `GITHUB
 
 GitHub Actions workflow `.github/workflows/quality.yml` runs on push and on pull request: frozen install, workflow lint, typecheck, lint, unit tests, build, HTML smoke, Playwright. It uploads `reports/`, `playwright-report/`, `test-results/`, and `dist/public/version.json` even when the job fails. Retention is 14 days. The only token permission is `contents: read`. It does not grant `actions: write`, and it does not use `pull_request_target`. Artifact upload uses that default token.
 
-That workflow is not a merge gate until GitHub branch protection says it is. On 4 October 2026 a read-only audit found no rulesets and did not prove a required check on `main`. A private personal repository needs GitHub Pro, or a higher plan that includes protected branches, before protection can exist. CODEOWNERS and this workflow do not create that protection. **Main branch protection is pending verification.** If the plan does not allow it, that is an owner decision. Do not make the repo public, and do not buy a plan, just to test the setting.
+On 4 October 2026 GitHub reported protection on `main`. The required status-check context is `quality`, and it is strict. Admins are included. Force pushes and branch deletion are off. Conversation resolution is required. A pull request is required, and the required approving-review count is 0, so a sole owner is not deadlocked. Code-owner review and last-push approval are off. `CODEOWNERS` names `@mrhinkle` and does not, by itself, block a merge. The exact read-back is in [RELEASE-EVIDENCE.md](RELEASE-EVIDENCE.md).
 
-Vercel Git deploys run in parallel with Actions. A green workflow after a deployment already went out does not prove CI gated that release. Nothing in this repository tells Vercel to wait. **Do not claim the quality workflow blocks Vercel.** A red check and a green preview can exist for the same commit. Review the pull request before merge. That is a process rule, written in [CONTRIBUTING.md](../CONTRIBUTING.md), not a platform lock.
+An independent review of the current head is still required before merge. That review is process evidence Mark confirms. It is not a GitHub approval count. Do not add `Deployed smoke` as a required check. It cannot sign in to the protected host.
+
+Vercel can still build a preview before the quality job finishes. Protection stops a merge to `main` without the check. It does not make Vercel wait. A red check and a green preview can exist for the same commit.
 
 The same audit recorded Vercel deployment protection as SSO for generated `.vercel.app` URLs, including the production hostname, until a custom domain is attached. A login page, a redirect to login, or a 401/403 is not a passing smoke test. Check the pages in a browser that is already signed in to Vercel. Do not call `vercel curl` for that check: it can create a bypass secret, so it is not a read-only command. Do not mint a share link or a bypass token. The manual deployed-smoke workflow only works against an origin that already returns the site without a new credential.
 
@@ -83,7 +85,9 @@ Do that on the approved host only. Do not flip it to make a preview look "more r
 
 ## Rollback
 
-Vercel keeps earlier deployments. Rollback is promoting a known earlier deployment in the Vercel UI, or reverting the Git commit and letting `main` build again. This lane did not promote a deployment and did not record a deployment id. Before a domain points here, write down the deployment URL you would return to and smoke-check it with the manual workflow.
+Vercel keeps earlier deployments. The bootstrap production deployment is `dpl_J79UdCgz8o1PCTMvQm6Kq3sSEy3s` at https://crosscomm-website-4q64hcyjf-the-aie.vercel.app, source `024ed0c303bcf294a828b0bd4c8ab70c4370ec95`. While SSO protection is on, check a rollback target in a browser that is already signed in. Do not use the manual deployed-smoke workflow for that. It cannot authenticate, and creating a bypass secret is not allowed.
+
+Prefer a revert through a new pull request so `main` matches what is served. Promoting an old deployment in the Vercel UI without changing `main` leaves Git ahead. The next Git deployment can put the bad version back.
 
 `version.json` on the deployment is the SHA to compare with the commit you think is live.
 
@@ -93,8 +97,8 @@ No Vercel seat was granted to Macie by this folder.
 
 | Choice | What happens | What to watch |
 | --- | --- | --- |
-| Leave the project on the account that already linked the repo | Previews keep working for people who can see that account | Macie sees nothing until she is invited to the repo and, separately, to the Vercel project if she needs the dashboard |
-| Import the same Git repository into a new Vercel project | A second project builds the same commits | Two projects can both try to own a domain later. Do not attach crosscomm.com to either one now |
+| Leave the project on the account that already linked the repo | Previews keep working for people who can see that account | Macie needs a GitHub invite and a Vercel identity that can open the protected preview. Dashboard edit rights are a separate, narrower grant. Neither invite is done. |
+| Import the same Git repository into a new Vercel project | A second project builds the same commits | Two projects can both try to own a domain later. Do not attach crosscomm.com to either one now. An import does not rewrite `configuredDeploymentOrigin` or `githubRepo` in `client/src/site-config.ts`. |
 | Transfer the project to a team | The project moves, including deployment history, the Git link, domains, and most environment variables. Integrations, logs, and some attached resources do not all come along. | Re-authorize Git, check who can author a private-repo deploy, re-link the local CLI, and confirm the Git link still points at this repository. A transfer is an ownership change, not a copy. Do not do it now. |
 | Duplicate or use a template | You get the files at one moment | You do not get issues, deployment history, or the linked project |
 
@@ -102,12 +106,14 @@ Build settings on any new project must match the table above: frozen pnpm instal
 
 GitHub access is a separate decision, described in [MACIE-HANDOFF.md](MACIE-HANDOFF.md). A private fork is not a public fork. A collaborator seat is the normal way to work in this repo. Transferring the GitHub repository moves ownership. Do that only if ownership should move, and expect to reattach Vercel and any later domain.
 
+A fork, import, or duplicate keeps the old feedback destination until someone changes it. In `client/src/site-config.ts`, set `githubRepo` to the new repository and review `configuredDeploymentOrigin`. Leave `publicOrigin` as the public site, and do not set `indexable` to true as part of the copy. Update `CODEOWNERS`. Recreate the issue labels the templates name (`website-report`, `bug`, `content-correction`, `suggestion`). Open a feedback draft and confirm it targets the new repository. A Vercel import does not edit those source values. This receipt does not include a list of labels currently on the GitHub repository.
+
 ## Domains
 
 Not now. The user asked for a starter review site, not the production cutover. Do not add crosscomm.com, do not edit DNS, and do not issue a cutover certificate as part of review.
 
 When that work is approved, decide apex versus www first (the legacy list is apex; `publicOrigin` is www), attach the domain only to the chosen project, keep the noindex header until the index decision is explicit, and keep a tested rollback deployment. Details of the URL map are in [MIGRATION.md](MIGRATION.md).
 
-## What this lane did not verify
+## What the bootstrap receipt does not cover
 
-A hosted deployment URL, a green GitHub Actions run, branch protection, and a Lighthouse score. `pnpm lighthouse` writes `reports/lighthouse/home.json` and `reports/lighthouse/summary.md` only after the Lighthouse CLI actually runs against the local preview. Local compression on that preview is implemented. It is not proof of what the Vercel CDN sends, and it is not field data. The script does not invent a score and it does not fail the build on a number. Do not change `noindex` to chase a higher SEO category.
+See [RELEASE-EVIDENCE.md](RELEASE-EVIDENCE.md). It does not cover a later documentation pull request, a hosted mobile axe pass, an exhaustive hosted route crawl, the manual deployed-smoke workflow, Macie's invites, or a CDN field measurement. Local Lighthouse compression is not proof of what the Vercel CDN sends. Do not change `noindex` to chase a higher SEO category.

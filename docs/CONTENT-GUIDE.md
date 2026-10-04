@@ -76,4 +76,4 @@ These limits are in `site-config.ts` and checked by `client/src/lib/feedback.ts`
 
 ## Status of this guide
 
-The records are in the tree and covered by unit tests. Whether the rendered pages show them is the interface lane's job and was not verified when this guide was written. See [PLAN.md](PLAN.md).
+The records are in the tree and covered by unit tests. The fifteen built routes are what the review site serves. What was checked on the protected host is in [RELEASE-EVIDENCE.md](RELEASE-EVIDENCE.md). That check was not an exhaustive read of every sentence.
