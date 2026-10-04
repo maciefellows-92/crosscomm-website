@@ -6,9 +6,9 @@ The repository is private: `mrhinkle/crosscomm-website`. Only people the owner i
 
 1. Start from a GitHub issue. A visitor report is not an issue until a person submits it. The site never sends one by itself.
 2. Make a branch. Do not work on `main`.
-3. Open a pull request. GitHub Actions runs the quality workflow. Vercel, if the coordinator's link is still in place, builds a preview. Those are separate. A red check does not by itself stop Vercel. See [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md).
-4. Someone other than the author reviews the change when that is possible.
-5. Merge only after that review. Then open the deployment, confirm the page, and close the issue with the URL or the commit.
+3. Open a pull request. GitHub Actions runs the `quality` check. Vercel builds a preview on its own schedule. A red check does not stop the preview. `main` does require a green `quality` check before merge. See [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md).
+4. Someone other than the author reviews the current head. That review is required process evidence. GitHub's approving-review count is 0, so it does not enforce the review. Mark confirms the current-head evidence before merge.
+5. Before merge, match the preview `version.json` to the pull-request head. After merge, match production `version.json` to the `main` SHA. Close the issue with that URL or commit. The bootstrap receipt is [docs/RELEASE-EVIDENCE.md](docs/RELEASE-EVIDENCE.md).
 
 ## Rules that keep the review site honest
 

@@ -9,7 +9,7 @@ The fifteen pages, the build, and the tests are in this repository. Visitors do 
 1. Edit a typed record. See [CONTENT-GUIDE.md](CONTENT-GUIDE.md).
 2. Open a pull request. GitHub Actions runs the quality checks. Vercel builds a preview from the same push. Those two are separate. See [DEPLOYMENT.md](DEPLOYMENT.md).
 3. Someone other than the author reviews the pages.
-4. Review the preview and wait for a green quality check before merge. After merge, confirm the hosted deployment and its `version.json` SHA before closing the issue.
+4. Before merge, match the preview `version.json` to the current pull-request head and wait for a green `quality` check. After merge, match production `version.json` to the `main` SHA. The bootstrap receipt is [RELEASE-EVIDENCE.md](RELEASE-EVIDENCE.md).
 
 ## What the build does
 
@@ -22,7 +22,7 @@ The fifteen pages, the build, and the tests are in this repository. Visitors do 
 
 ## Status on 4 October 2026
 
-Unit tests, lint, the production build, prerender smoke, and actionlint passed locally. The 15 known routes passed in the browser on desktop and mobile, including contact and the work filters. The repaired browser suite, Claude's visual review, remote CI, and the hosted deployment are still being checked. `pnpm lighthouse` writes a JSON file and a summary only after Chrome actually runs. Local gzip and Brotli negotiation is implemented on the preview server. That is not the same as a measurement of the Vercel CDN. It does not invent a score and it does not fail the build on a number. Do not turn indexing on to raise the SEO category. The review host stays `noindex`.
+Numbers, URLs, and what was not run are in [RELEASE-EVIDENCE.md](RELEASE-EVIDENCE.md). That record is the bootstrap commit only. `pnpm lighthouse` is a local lab run. The preview compresses text. That is not a Vercel CDN measurement and not a pass/fail gate. Do not turn indexing on to raise the SEO category. The review host stays `noindex`. The SEO score of 69 on that lab run is from `noindex`.
 
 ## Files the build reads
 

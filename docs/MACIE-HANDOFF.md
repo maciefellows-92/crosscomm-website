@@ -10,7 +10,7 @@ The request was a site good enough to review. It was not a request to switch the
 
 ## How you get in
 
-Ask Mark to invite your GitHub username to `mrhinkle/crosscomm-website`. Write access lets you open branches and pull requests. You do not need to be an admin. If you also want the hosting dashboard, ask him to invite that same username to the existing Vercel project. The repository and the project are already there.
+Ask Mark for your GitHub username on the private repository `mrhinkle/crosscomm-website`, and for the identity on your Vercel account so you can open the protected preview. Those are different invites. GitHub access does not open https://crosscomm-website.vercel.app. Write access on the repo lets you open branches and pull requests. You do not need to be an admin. Permission to view the protected preview is separate from permission to change the hosting dashboard. Neither invite has been sent. The request is [issue 4](https://github.com/mrhinkle/crosscomm-website/issues/4).
 
 Start here:
 
@@ -41,8 +41,8 @@ Start here:
 | --- | --- | --- |
 | Collaborator on this repo | Branches, pull requests, the same issues and the same Vercel previews | This is the normal way to review |
 | Private fork | A linked copy, only if forking is allowed and you already have access | It stays in the upstream private network. Losing upstream access can delete the fork. You cannot make it public on your own, and you cannot transfer that fork as its own repository. |
-| Duplicate or template | A new repository you can own, with the files from one moment | You do not get issues, deployment history, or the Vercel project. It needs its own GitHub connection and its own Vercel project. |
-| Transfer | The original repository moves to the new owner, history included | This is a normal ownership handoff, not a scratch copy. The recipient must not already have a repo or fork with the same name. Vercel and any later domain are transferred or reattached on purpose. |
+| Duplicate or template | A new repository you can own, with the files from one moment | You do not get issues, deployment history, or the Vercel project. It needs its own GitHub connection and its own Vercel project. Change `githubRepo` and review `configuredDeploymentOrigin` in `client/src/site-config.ts`, or feedback drafts still open `mrhinkle/crosscomm-website`. Do not turn indexing on. Update `CODEOWNERS`, recreate the issue labels, and open one draft to confirm the new repository. |
+| Transfer | The original repository moves to the new owner, history included | This is a normal ownership handoff, not a scratch copy. The recipient must not already have a repo or fork with the same name. Vercel and any later domain are transferred or reattached on purpose. The same `githubRepo` and deployment-origin edits apply if the repository name or the review host changes. A Vercel import does not rewrite those values. |
 
 Details of the Vercel side are in [DEPLOYMENT.md](DEPLOYMENT.md). Do not copy an `.env` file from someone else's machine.
 

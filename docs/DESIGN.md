@@ -1,6 +1,6 @@
 # Design
 
-This is the visual target for the interface lane. This delivery lane did not build the pages and did not measure contrast on a rendered screen. Treat the numbers below as the brief, not as a test result.
+This is the visual target. Treat the numbers below as the brief. The bootstrap checks are in [RELEASE-EVIDENCE.md](RELEASE-EVIDENCE.md). They do not measure every color in this file.
 
 ## Character
 

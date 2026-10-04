@@ -4,6 +4,7 @@ This file is for a later coding agent in the CrossComm repository. It is not per
 
 - Read [README.md](README.md) and [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md) before editing.
 - The review build is `noindex`. Do not flip `siteConfig.indexable` or remove the `X-Robots-Tag` header unless the owner asked for the cutover in that pull request.
+- Bootstrap release evidence is [docs/RELEASE-EVIDENCE.md](docs/RELEASE-EVIDENCE.md). Do not cite it for a later commit.
 - Do not add a single-page catch-all rewrite. `vercel.json` has no `rewrites`.
 - Feedback is a draft, a copy, or a download. Never describe it as sent.
 - Do not invent proof, legal text, or environment variables. Do not read `.env.local` or print secrets.
