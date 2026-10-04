@@ -1,5 +1,4 @@
-@import "@fontsource/fraunces/latin-600.css";
-@import "@fontsource/fraunces/latin-600-italic.css";
+@import "@fontsource/manrope/latin-600.css";
 @import "@fontsource/source-sans-3/latin-400.css";
 @import "@fontsource/source-sans-3/latin-600.css";
 @import "@fontsource/ibm-plex-mono/latin-400.css";
@@ -19,7 +18,7 @@
   --brand-blue: #89b6d5;
   --danger: #7a1e12;
   --photo-matte: #123f4a;
-  --serif: "Fraunces", "Iowan Old Style", Palatino, "Palatino Linotype", serif;
+  --display: "Manrope", "Segoe UI", sans-serif;
   --sans: "Source Sans 3", "Source Sans Pro", "Segoe UI", sans-serif;
   --mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
   --page: 1320px;
@@ -62,7 +61,7 @@ p {
 h1,
 h2,
 h3 {
-  font-family: var(--serif);
+  font-family: var(--display);
   font-weight: 600;
   line-height: 1.05;
   letter-spacing: -0.03em;
@@ -263,8 +262,8 @@ main h1,
 }
 
 .line-matter {
-  font-style: italic;
   font-weight: 600;
+  font-style: normal;
   color: var(--copper);
 }
 
@@ -420,7 +419,7 @@ main h1,
 
 .proof-grid dd {
   margin: 0.2rem 0 0;
-  font-family: var(--serif);
+  font-family: var(--display);
   font-size: clamp(1.7rem, 3vw, 2.6rem);
   font-weight: 600;
   letter-spacing: -0.03em;
@@ -477,7 +476,7 @@ main h1,
 
 .service-rows .num {
   grid-area: num;
-  font-family: var(--serif);
+  font-family: var(--display);
   font-size: clamp(1.8rem, 3vw, 2.6rem);
   font-weight: 600;
   color: var(--copper);
@@ -674,7 +673,8 @@ main h1,
 .belief-list li {
   padding-top: 0.9rem;
   border-top: 1px solid #9db8bc;
-  font-family: var(--serif);
+  font-family: var(--display);
+  font-weight: 600;
   font-size: clamp(1.35rem, 2vw, 1.75rem);
   line-height: 1.25;
   letter-spacing: -0.02em;
@@ -780,7 +780,7 @@ main h1,
 }
 
 .activities .num {
-  font-family: var(--serif);
+  font-family: var(--display);
   font-size: 1.6rem;
   color: var(--copper);
   font-weight: 600;
@@ -872,7 +872,8 @@ main h1,
 
 .related-links a,
 .rescue-links a {
-  font-family: var(--serif);
+  font-family: var(--display);
+  font-weight: 600;
   font-size: 1.6rem;
   color: var(--slate);
   text-decoration: none;
@@ -908,7 +909,8 @@ main h1,
 }
 
 .beliefs p {
-  font-family: var(--serif);
+  font-family: var(--display);
+  font-weight: 600;
   font-size: clamp(1.45rem, 2.5vw, 2rem);
   line-height: 1.25;
   letter-spacing: -0.02em;
@@ -977,7 +979,8 @@ main h1,
 }
 
 .big-contact {
-  font-family: var(--serif);
+  font-family: var(--display);
+  font-weight: 600;
   font-size: clamp(1.7rem, 3vw, 2.4rem);
   line-height: 1.15;
   letter-spacing: -0.03em;
@@ -1064,7 +1067,7 @@ textarea {
 
 .giant {
   margin: 0;
-  font-family: var(--serif);
+  font-family: var(--display);
   font-weight: 600;
   font-size: clamp(6rem, 22vw, 14rem);
   line-height: 0.8;
@@ -1091,7 +1094,8 @@ textarea {
 }
 
 .strip-inner p {
-  font-family: var(--serif);
+  font-family: var(--display);
+  font-weight: 600;
   font-size: 1.6rem;
   letter-spacing: -0.03em;
 }
@@ -1419,7 +1423,8 @@ legend {
   }
 
   .nav-mobile a {
-    font-family: var(--serif);
+    font-family: var(--display);
+    font-weight: 600;
     font-size: 2.4rem;
     line-height: 1.15;
     color: var(--ice);
