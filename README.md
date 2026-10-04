@@ -13,7 +13,7 @@ Once you can open the repo:
 1. Read a page against the live CrossComm page it came from. [docs/CONTENT-GUIDE.md](docs/CONTENT-GUIDE.md) says where each sentence lives.
 2. Change the typed record, not a generated HTML file. Open a pull request. Someone else reviews it. [docs/FEEDBACK.md](docs/FEEDBACK.md) is the same loop when the note starts from the on-page report.
 3. Before merge, compare the preview `version.json` and the Vercel Git metadata with the current pull-request head, and wait for a green `quality` check on that head. After merge, compare production `version.json` with the `main` SHA. [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md) covers hosting, rollback, and a later domain move. [docs/RELEASE-EVIDENCE.md](docs/RELEASE-EVIDENCE.md) is the bootstrap receipt.
-4. [docs/MACIE-HANDOFF.md](docs/MACIE-HANDOFF.md) is the longer reading guide. [docs/BACKLOG.md](docs/BACKLOG.md) is what is still a decision, not a defect in the pages you can click.
+4. [docs/MACIE-HANDOFF.md](docs/MACIE-HANDOFF.md) is the longer reading guide. [design.md](design.md) is the design system. [docs/BACKLOG.md](docs/BACKLOG.md) is what is still a decision, not a defect in the pages you can click.
 
 ## Running it locally
 

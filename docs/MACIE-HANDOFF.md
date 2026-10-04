@@ -15,10 +15,11 @@ Ask Mark for your GitHub username on the private repository `mrhinkle/crosscomm-
 Start here:
 
 1. [README.md](../README.md) for how to run the site.
-2. [CONTENT-GUIDE.md](CONTENT-GUIDE.md) for changing a sentence without inventing a fact.
-3. [FEEDBACK.md](FEEDBACK.md) for how a comment becomes a change.
-4. [DEPLOYMENT.md](DEPLOYMENT.md) for previews, merge, rollback, and a later domain.
-5. [BACKLOG.md](BACKLOG.md) for decisions that are still open.
+2. [design.md](../design.md) for color, type, layout, and components.
+3. [CONTENT-GUIDE.md](CONTENT-GUIDE.md) for changing a sentence without inventing a fact.
+4. [FEEDBACK.md](FEEDBACK.md) for how a comment becomes a change.
+5. [DEPLOYMENT.md](DEPLOYMENT.md) for previews, merge, rollback, and a later domain.
+6. [BACKLOG.md](BACKLOG.md) for decisions that are still open.
 
 ## What you can do
 
