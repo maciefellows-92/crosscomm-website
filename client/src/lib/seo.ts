@@ -115,7 +115,7 @@ export function renderHead(route: RouteDef, origins: SiteOrigins): string {
     `<meta property="og:image" content="${escapeAttr(head.ogImage)}" />`,
     `<meta property="og:image:width" content="1200" />`,
     `<meta property="og:image:height" content="630" />`,
-    `<meta property="og:image:alt" content="CrossComm wordmark on a dark field, with AI strategy, custom apps, and human-centered product development, plus Durham and Cleveland." />`,
+    `<meta property="og:image:alt" content="${escapeAttr(ogImageAlt)}" />`,
     `<meta name="twitter:card" content="summary_large_image" />`,
     `<meta name="twitter:title" content="${escapeAttr(head.title)}" />`,
     `<meta name="twitter:description" content="${escapeAttr(head.description)}" />`,
@@ -123,6 +123,9 @@ export function renderHead(route: RouteDef, origins: SiteOrigins): string {
     json,
   ].join("\n");
 }
+
+export const ogImageAlt =
+  "CrossComm wordmark on a slate field, with a thin copper line and the headline Make the next thing.";
 
 export function releaseToken(): string {
   return buildMeta.release;

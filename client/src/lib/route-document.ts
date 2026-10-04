@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 import { useLocation } from "react-router";
 import { notFoundRoute, routeByPath, type RouteDef } from "../content/routes";
-import { headFor, releaseToken, type HeadModel } from "./seo";
+import { headFor, ogImageAlt, releaseToken, type HeadModel } from "./seo";
 import { useOrigins } from "./origins";
 
 export function useMatchedRoute(): RouteDef {
@@ -20,9 +20,6 @@ function setMeta(attr: "name" | "property", key: string, content: string) {
   el.content = content;
 }
 
-const ogAlt =
-  "CrossComm wordmark on a dark field, with AI strategy, custom apps, and human-centered product development, plus Durham and Cleveland.";
-
 function applyHead(head: HeadModel) {
   document.title = head.title;
   setMeta("name", "description", head.description);
@@ -35,7 +32,7 @@ function applyHead(head: HeadModel) {
   setMeta("property", "og:image", head.ogImage);
   setMeta("property", "og:image:width", "1200");
   setMeta("property", "og:image:height", "630");
-  setMeta("property", "og:image:alt", ogAlt);
+  setMeta("property", "og:image:alt", ogImageAlt);
   setMeta("name", "twitter:card", "summary_large_image");
   setMeta("name", "twitter:title", head.title);
   setMeta("name", "twitter:description", head.description);
