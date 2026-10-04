@@ -1,7 +1,10 @@
 /**
  * Manual check of an already deployed HTTPS origin.
  * GitHub runs this only from workflow_dispatch. It does not deploy anything.
+ * Index posture comes from siteConfig.indexable, not from the hostname.
  */
+import { siteConfig } from "../client/src/site-config.ts";
+import { hostedIndexProblems } from "./robots-posture.ts";
 const allowedHost = (host: string): boolean =>
   host === "crosscomm.com" || host === "www.crosscomm.com" || host.endsWith(".vercel.app");
 
@@ -33,16 +36,13 @@ async function main(): Promise<void> {
   if (!allowedHost(homeFinal.hostname)) throw new Error(`Homepage redirected off the allowed host to ${homeFinal.hostname}`);
   if (home.status !== 200) throw new Error(`Homepage status ${home.status}, expected 200`);
 
-  const reviewHost = origin.hostname.endsWith(".vercel.app");
   const header = home.headers.get("x-robots-tag") ?? "";
-  const metaNoindex = /name=["']robots["'][^>]*content=["'][^"']*noindex/i.test(homeText);
-  if (reviewHost && !/noindex/i.test(header) && !metaNoindex) {
-    throw new Error("Review host did not send noindex in X-Robots-Tag or the robots meta.");
-  }
+  const indexProblems = hostedIndexProblems(siteConfig.indexable, header, homeText);
+  if (indexProblems.length) throw new Error(indexProblems.join(" "));
 
   const robots = await fetch(new URL("/robots.txt", origin));
   const robotsText = await robots.text();
-  if (reviewHost && /^Sitemap:/m.test(robotsText)) {
+  if (!siteConfig.indexable && /^Sitemap:/m.test(robotsText)) {
     throw new Error("Review robots.txt advertises a sitemap.");
   }
   if (/^Disallow:\s*\/\s*$/m.test(robotsText)) {

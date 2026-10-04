@@ -9,3 +9,4 @@ reports
 .tools
 .DS_Store
 *.tsbuildinfo
+client/src/generated/build-meta.ts

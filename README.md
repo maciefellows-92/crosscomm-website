@@ -12,7 +12,7 @@ Once you can open the repo:
 
 1. Read a page against the live CrossComm page it came from. [docs/CONTENT-GUIDE.md](docs/CONTENT-GUIDE.md) says where each sentence lives.
 2. Change the typed record, not a generated HTML file. Open a pull request. Someone else reviews it. [docs/FEEDBACK.md](docs/FEEDBACK.md) is the same loop when the note starts from the on-page report.
-3. Merge after review. Confirm the preview, then the production deployment, before you close the issue. [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md) covers hosting, rollback, and a later domain move.
+3. Review the preview and wait for a green quality check before you merge. After merge, confirm the hosted deployment and that `version.json` matches the commit. [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md) covers hosting, rollback, and a later domain move.
 4. [docs/MACIE-HANDOFF.md](docs/MACIE-HANDOFF.md) is the longer reading guide. [docs/BACKLOG.md](docs/BACKLOG.md) is what is still a decision, not a defect in the pages you can click.
 
 ## Running it locally
@@ -34,10 +34,10 @@ pnpm dev
 | `pnpm test` | Unit tests | |
 | `pnpm test:e2e` | Browser tests against the preview server | needs a build and Playwright's Chromium |
 | `pnpm smoke` | Checks the built HTML | needs a build |
-| `pnpm lighthouse` | One real Lighthouse run. Not a pass/fail score. | needs a build and Chrome |
+| `pnpm lighthouse` | One real Lighthouse run against the local preview. The preview compresses text. That is not a Vercel CDN measurement and not a pass/fail score. | needs a build and Chrome |
 | `pnpm check` | Typecheck, lint, workflow lint, unit tests, build, smoke, browser tests | |
 
-Playwright's browser is not in the lockfile. Install it once with `pnpm exec playwright install chromium`. Do not point the preview at port 4173. That port is used by another local site.
+Playwright's browser is not in the lockfile. Install it once with `pnpm exec playwright install chromium`. The preview defaults to port 4187. Override it with `PREVIEW_PORT`. Do not attach this server to a process you did not start, and do not borrow another project's port.
 
 ## What is in the repository
 

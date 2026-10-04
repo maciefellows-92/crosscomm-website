@@ -1,6 +1,8 @@
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { siteConfig } from "../client/src/site-config.ts";
+import { robotsHeaderProblem } from "./robots-posture.ts";
 
 export type AuditIssue = { file: string; check: string; detail: string };
 
@@ -119,6 +121,15 @@ function isSkippableRef(value: string): boolean {
 
 export function auditBuild(distDir: string): AuditIssue[] {
   const problems: AuditIssue[] = [];
+  const headerFile = path.resolve("vercel.json");
+  if (fs.existsSync(headerFile)) {
+    const vercel = JSON.parse(fs.readFileSync(headerFile, "utf8")) as {
+      headers?: { headers?: { key?: string; value?: string }[] }[];
+    };
+    const robots = (vercel.headers ?? []).flatMap((block) => block.headers ?? []).find((header) => header.key === "X-Robots-Tag");
+    const mismatch = robotsHeaderProblem(siteConfig.indexable, robots?.value);
+    if (mismatch) problems.push(issue("vercel.json", "robots-header", mismatch));
+  }
   const publicDir = path.join(distDir, "public");
   const versionFile = path.join(publicDir, "version.json");
   const manifestFile = path.join(distDir, "route-manifest.json");

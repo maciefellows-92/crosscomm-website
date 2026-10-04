@@ -18,7 +18,12 @@ export function ServicePage() {
     <>
       <article className="wrap page">
         <Breadcrumbs />
-        <PageIntro eyebrow={`Services · ${String(index + 1).padStart(2, "0")}`} title={service.name} deck={service.lead} />
+        <PageIntro
+          className="service-intro"
+          eyebrow={`Services · ${String(index + 1).padStart(2, "0")}`}
+          title={service.name}
+          deck={service.lead}
+        />
         <section className="split">
           <h2>Who it is for</h2>
           <p className="lead-copy">{service.audience}</p>

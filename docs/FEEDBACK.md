@@ -46,9 +46,9 @@ Suggested labels, written into the report, are `website-report` plus `bug`, `con
 
 The draft control's accessible name is exactly **Open issue draft in GitHub**. The address starts with `https://github.com/mrhinkle/crosscomm-website/issues/new?`.
 
-## What the interface still has to build
+## The dialog is on the page
 
-The rules above are implemented in `client/src/lib/feedback.ts` and locked by unit tests. The dialog itself is the interface lane. [PLAN.md](PLAN.md) lists the accessible names the browser tests look for: open, close, focus return on Escape, preview text, copy, download, and the disabled draft when the URL is too long. Those tests were written before the dialog existed. They are the contract, not a claim that a screen was clicked.
+The rules above are implemented in `client/src/lib/feedback.ts` and locked by unit tests. The report dialog is in the footer of the review site. It opens from "Report a problem", keeps the draft in a preview, and offers copy, download, and an issue draft link. Nothing is filed until the visitor submits that draft on GitHub. Browser tests cover open, close, focus return, the preview, copy, download, and the disabled draft when the URL is too long. A green remote run of those tests is still a receipt the coordinator has to attach. This file does not claim that receipt.
 
 ## Server filing is optional and not built
 

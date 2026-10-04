@@ -80,7 +80,7 @@ export const services: ServiceRecord[] = [
       {
         title: "A place to begin",
         detail:
-          "We start with one named workflow, the systems it touches, and which decisions a person still needs to make. We are a CrewAI Solutions Partner.",
+          "We start with one named workflow, the systems it touches, and which decisions a person still needs to make. CrewAI is one stack we use when it fits.",
       },
     ],
     proofNote:
@@ -182,7 +182,7 @@ export const services: ServiceRecord[] = [
       {
         title: "Tools in the room",
         detail:
-          "Hands-on time for marketing, sales, and operations. The current set includes ChatGPT, Claude, Microsoft Copilot, and Veo 3.",
+          "Hands-on time for marketing, sales, and operations with the chat, writing, and video tools the team already uses, including ChatGPT, Claude, and Microsoft Copilot.",
       },
       {
         title: "Practice",

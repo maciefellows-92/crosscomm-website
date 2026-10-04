@@ -70,7 +70,7 @@ Individual blog URLs are deferred on this host. The full list is [MIGRATION.md](
 
 Not started. There is no Search Console property, no analytics id, and no Semrush export in this repo. Do not add either id during review.
 
-When measurement is allowed, the strategy's weekly loop is the one to use: qualified inquiries (only after a real destination exists), Search Console clicks and impressions, queries, indexing errors, field mobile data when there is enough of it, and the feedback issues. A Lighthouse lab number is not that loop. `pnpm lighthouse` records one lab run. It is not a pass/fail gate.
+When measurement is allowed, the strategy's weekly loop is the one to use: qualified inquiries (only after a real destination exists), Search Console clicks and impressions, queries, indexing errors, field mobile data when there is enough of it, and the feedback issues. A Lighthouse lab number is not that loop. `pnpm lighthouse` records one lab run against the local preview. That preview negotiates gzip or Brotli for text. Local compression is implemented and is not the same as a Vercel CDN measurement or field data. It is not a pass/fail gate. An SEO category held down by `noindex` stays that way until an owner asks for the review host to be indexed. Do not flip indexability to raise the score.
 
 Set a numeric growth target only after a baseline exists. The Semrush baseline does not exist yet. The acceptance for creating one is in [BACKLOG.md](BACKLOG.md).
 

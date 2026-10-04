@@ -1,6 +1,7 @@
 import { useEffect, useId, useRef, useState, type MouseEvent } from "react";
 import { useLocation } from "react-router";
 import { issueDraft, pathnameOnly, reportTypes, validateReport, formatReport, type ReportType } from "../lib/feedback";
+import { useOrigins } from "../lib/origins";
 import { releaseToken } from "../lib/seo";
 import { siteConfig } from "../site-config";
 
@@ -15,6 +16,7 @@ function charCount(value: string): number {
 }
 
 export function FeedbackDialog() {
+  const origins = useOrigins();
   const location = useLocation();
   const titleId = useId();
   const fallbackId = useId();
@@ -96,8 +98,8 @@ export function FeedbackDialog() {
     link.href = url;
     link.download = "crosscomm-website-report.md";
     link.click();
-    URL.revokeObjectURL(url);
-    setStatus("Downloaded. Nothing was filed.");
+    window.setTimeout(() => URL.revokeObjectURL(url), 1500);
+    setStatus("Download requested. Nothing was filed. If the file did not save, copy the report.");
   }
 
   function explainDraft(event: MouseEvent<HTMLAnchorElement>) {
@@ -110,6 +112,8 @@ export function FeedbackDialog() {
       "Tried to open a GitHub draft in a new tab. Nothing was filed. Submit it on GitHub if that tab opened. If it did not, copy or download the report.",
     );
   }
+
+  if (origins.indexable) return null;
 
   return (
     <>

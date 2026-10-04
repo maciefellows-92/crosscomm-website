@@ -4,7 +4,10 @@ import os from "node:os";
 import path from "node:path";
 import { describe, expect, it } from "vitest";
 import { injectHtml, gitHead, missingUi, renderBuildMetaSource, resolveRelease, HEAD_MARKER, HTML_MARKER } from "../scripts/build";
+import { ensureBuildMeta } from "../scripts/ensure-build-meta";
+import { siteConfig } from "../client/src/site-config";
 import { summary } from "../scripts/lighthouse";
+import { hostedIndexProblems, robotsHeaderProblem } from "../scripts/robots-posture";
 
 describe("release receipt", () => {
   it("prefers the Vercel SHA, then GitHub, then git, and otherwise local", () => {
@@ -79,6 +82,17 @@ describe("interface preflight", () => {
   });
 });
 
+describe("generated build meta", () => {
+  it("writes a local fallback only when the module is missing", () => {
+    const root = fs.mkdtempSync(path.join(os.tmpdir(), "crosscomm-meta-"));
+    expect(ensureBuildMeta(root)).toBe("written");
+    const file = path.join(root, "client/src/generated/build-meta.ts");
+    expect(fs.readFileSync(file, "utf8")).toContain('"release": "local"');
+    expect(ensureBuildMeta(root)).toBe("present");
+    fs.rmSync(root, { recursive: true, force: true });
+  });
+});
+
 describe("static hosting", () => {
   it("asks Vercel for a real 404 and does not install a single-page catch-all", () => {
     const vercel = JSON.parse(fs.readFileSync("vercel.json", "utf8")) as {
@@ -93,8 +107,33 @@ describe("static hosting", () => {
     expect(vercel.rewrites).toBeUndefined();
     expect(vercel.routes).toBeUndefined();
     const headers = (vercel.headers ?? []).flatMap((block) => block.headers);
-    expect(headers.some((header) => header.key === "X-Robots-Tag" && header.value === "noindex, follow")).toBe(true);
+    const robots = headers.find((header) => header.key === "X-Robots-Tag")?.value;
+    expect(robotsHeaderProblem(siteConfig.indexable, robots)).toBeNull();
+    expect(siteConfig.indexable).toBe(false);
+    expect(robots).toBe("noindex, follow");
     expect(headers.some((header) => header.key.toLowerCase() === "content-security-policy")).toBe(false);
+  });
+});
+
+describe("robots header posture", () => {
+  const html = '<meta name="robots" content="noindex, follow" />';
+  const live = '<meta name="robots" content="index, follow" />';
+
+  it("rejects indexable true while the header still says noindex", () => {
+    expect(robotsHeaderProblem(true, "noindex, follow")).toMatch(/still sends noindex/);
+    expect(hostedIndexProblems(true, "noindex, follow", live)).toEqual([
+      "Live build still sends noindex on X-Robots-Tag.",
+    ]);
+    expect(hostedIndexProblems(true, "index, follow", html)).toEqual([
+      "Live build still sends noindex on the robots meta tag.",
+    ]);
+  });
+
+  it("rejects indexable false when either signal drops noindex", () => {
+    expect(robotsHeaderProblem(false, "index, follow")).toMatch(/does not send noindex/);
+    expect(hostedIndexProblems(false, "", live).length).toBe(2);
+    expect(hostedIndexProblems(false, "noindex, follow", html)).toEqual([]);
+    expect(hostedIndexProblems(true, "index, follow", live)).toEqual([]);
   });
 });
 

@@ -720,6 +720,14 @@ main h1,
   margin-top: 1rem;
 }
 
+.service-intro {
+  max-width: 64rem;
+}
+
+.service-intro h1 {
+  font-size: clamp(2.6rem, 4.4vw, 4.15rem);
+}
+
 .crumbs {
   margin-bottom: 1.5rem;
 }
@@ -825,20 +833,10 @@ main h1,
 .case-hero img {
   display: block;
   width: 100%;
-  aspect-ratio: 16 / 10;
+  aspect-ratio: 16 / 9;
   object-fit: cover;
-  object-position: center 35%;
+  object-position: center;
   background: var(--sage);
-}
-
-.case-hero.is-phone {
-  margin-left: auto;
-}
-
-.case-hero.is-phone img {
-  aspect-ratio: 4 / 5;
-  object-position: 72% 40%;
-  max-height: 78vh;
 }
 
 .chapters {
@@ -1234,6 +1232,7 @@ legend {
   gap: 0.4rem;
   min-height: 44px;
   font-weight: 600;
+  white-space: nowrap;
 }
 
 .diagnostics {
@@ -1332,9 +1331,6 @@ legend {
     grid-template-columns: 1.3fr 1fr 1fr 1fr;
   }
 
-  .case-hero.is-phone {
-    max-width: 68%;
-  }
 }
 
 @media (min-width: 960px) {

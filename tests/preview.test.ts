@@ -2,18 +2,25 @@ import fs from "node:fs";
 import http from "node:http";
 import os from "node:os";
 import path from "node:path";
+import zlib from "node:zlib";
 import { afterEach, describe, expect, it } from "vitest";
-import { createPreviewServer, listenPreview, previewPort } from "../scripts/preview-server";
+import { chooseEncoding, createBodyCache, createPreviewServer, listenPreview, previewPort } from "../scripts/preview-server";
 
 const SECRET = "UNIQUE-SECRET-SHOULD-NOT-LEAK";
 
-function request(port: number, method: string, urlPath: string): Promise<{ status: number; headers: http.IncomingHttpHeaders; body: string }> {
+function request(
+  port: number,
+  method: string,
+  urlPath: string,
+  headers?: Record<string, string>,
+): Promise<{ status: number; headers: http.IncomingHttpHeaders; body: string; raw: Buffer }> {
   return new Promise((resolve, reject) => {
-    const req = http.request({ hostname: "127.0.0.1", port, path: urlPath, method }, (res) => {
+    const req = http.request({ hostname: "127.0.0.1", port, path: urlPath, method, headers }, (res) => {
       const chunks: Buffer[] = [];
       res.on("data", (chunk: Buffer) => chunks.push(chunk));
       res.on("end", () => {
-        resolve({ status: res.statusCode ?? 0, headers: res.headers, body: Buffer.concat(chunks).toString("utf8") });
+        const raw = Buffer.concat(chunks);
+        resolve({ status: res.statusCode ?? 0, headers: res.headers, body: raw.toString("utf8"), raw });
       });
     });
     req.on("error", reject);
@@ -113,5 +120,70 @@ describe("preview server", () => {
     expect(unicode.body).toBe("tea");
 
     fs.rmSync(outside, { force: true });
+  });
+
+  it("negotiates brotli for text and keeps identity when gzip is refused", async () => {
+    dir = fs.mkdtempSync(path.join(os.tmpdir(), "crosscomm-preview-"));
+    const html = `<h1>${"compressible text ".repeat(40)}</h1>`;
+    fs.writeFileSync(path.join(dir, "index.html"), html);
+    fs.writeFileSync(path.join(dir, "mark.png"), Buffer.from([137, 80, 78, 71, 1, 2, 3, 4]));
+    fs.writeFileSync(path.join(dir, "404.html"), "missing");
+
+    server = createPreviewServer(dir);
+    await listenPreview(server, 0);
+    const address = server.address();
+    if (!address || typeof address === "string") throw new Error("preview port missing");
+    const port = address.port;
+
+    const encoded = await request(port, "GET", "/", { "Accept-Encoding": "gzip, br" });
+    expect(encoded.status).toBe(200);
+    expect(encoded.headers["content-encoding"]).toBe("br");
+    expect(encoded.headers.vary).toBe("Accept-Encoding");
+    expect(encoded.headers["content-length"]).toBe(String(encoded.raw.length));
+    expect(encoded.raw.length).toBeLessThan(Buffer.byteLength(html));
+    expect(zlib.brotliDecompressSync(encoded.raw).toString("utf8")).toBe(html);
+
+    const refused = await request(port, "HEAD", "/", { "Accept-Encoding": "gzip;q=0, br;q=0, identity" });
+    expect(refused.status).toBe(200);
+    expect(refused.raw.length).toBe(0);
+    expect(refused.headers["content-encoding"]).toBeUndefined();
+    expect(refused.headers["content-length"]).toBe(String(Buffer.byteLength(html)));
+    expect(refused.headers.vary).toBe("Accept-Encoding");
+
+    fs.writeFileSync(path.join(dir, "index.html"), "<h1>replaced</h1>");
+    const fresh = await request(port, "GET", "/", { "Accept-Encoding": "br" });
+    expect(zlib.brotliDecompressSync(fresh.raw).toString("utf8")).toBe("<h1>replaced</h1>");
+
+    const image = await request(port, "GET", "/mark.png", { "Accept-Encoding": "br, gzip" });
+    expect(image.status).toBe(200);
+    expect(image.headers["content-encoding"]).toBeUndefined();
+    expect(image.headers["content-length"]).toBe("8");
+    expect(image.raw.equals(Buffer.from([137, 80, 78, 71, 1, 2, 3, 4]))).toBe(true);
+  });
+});
+
+describe("encoding cache", () => {
+  it("reuses a body only for the same bytes and stays within its limit", () => {
+    const cache = createBodyCache(2);
+    const first = Buffer.from("alpha ".repeat(30));
+    const again = cache.encode(first, "br");
+    expect(cache.encode(first, "br")).toBe(again);
+    const second = cache.encode(Buffer.from("beta ".repeat(30)), "br");
+    expect(second.equals(again)).toBe(false);
+    expect(zlib.brotliDecompressSync(second).toString("utf8")).toBe("beta ".repeat(30));
+    cache.encode(Buffer.from("gamma ".repeat(30)), "br");
+    expect(cache.size).toBe(2);
+    expect(cache.encode(first, "br")).not.toBe(again);
+    expect(zlib.brotliDecompressSync(cache.encode(Buffer.from("gamma ".repeat(30)), "br")).toString("utf8")).toBe("gamma ".repeat(30));
+  });
+});
+
+describe("chooseEncoding", () => {
+  it("honors q=0 and prefers brotli when quality ties", () => {
+    expect(chooseEncoding(undefined)).toBe("identity");
+    expect(chooseEncoding("gzip;q=0, br;q=0, identity;q=0")).toBe("none");
+    expect(chooseEncoding("gzip;q=0")).toBe("identity");
+    expect(chooseEncoding("gzip, br")).toBe("br");
+    expect(chooseEncoding("br;q=0, gzip")).toBe("gzip");
   });
 });

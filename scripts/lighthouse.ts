@@ -23,7 +23,7 @@ function summary(report: LighthouseReport): string {
   const lines = [
     "# Lighthouse lab summary",
     "",
-    "This is one lab run against the local preview server. It is not a pass/fail gate, not field data, and not a statement about crosscomm.com.",
+    "This is one lab run against the local preview server. That server negotiates gzip or Brotli for HTML, CSS, and JavaScript. Local compression is implemented here and is not the same as a Vercel CDN measurement. The result is a local lab number, not field data, not a statement about crosscomm.com, and not a pass/fail gate.",
     "",
     "| Category | Score |",
     "| --- | --- |",

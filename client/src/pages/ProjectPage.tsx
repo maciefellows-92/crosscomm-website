@@ -12,7 +12,7 @@ export function ProjectPage() {
   const related = project.relatedServiceSlugs
     .map((serviceSlug) => serviceBySlug(serviceSlug))
     .filter((service): service is ServiceRecord => Boolean(service));
-  const heroClass = project.slug === "acs-cares" ? "case-hero is-phone" : "case-hero";
+  const heroClass = "case-hero";
 
   return (
     <>

@@ -26,6 +26,26 @@ Effort: small once the text exists. Blocked until then.
 
 Owner: Mark, with whoever at CrossComm owns the legal wording.
 
+### Replace cutover self-links before any DNS switch
+
+Acceptance: before a domain points at this host, the contact page no longer sends people to `www.crosscomm.com/contact/`, careers no longer sends them to `www.crosscomm.com/careers/`, each "Original case study" link no longer points at the page they are already on, and the five insight links no longer point at deferred URLs that 404 on this host. This review starter does not switch DNS.
+
+User impact: after cutover, a visitor can still reach a real lead form, the original case study if it remains elsewhere, and the articles. They do not loop back onto the same page or a 404.
+
+Effort: small once the replacement URLs are named. Blocked on those destinations.
+
+Owner: Mark names the destinations. Engineering updates the typed records. Do not change DNS in that pull request.
+
+### Keep the report dialog off a public host, or replace it
+
+Acceptance: a public, indexable host does not offer a GitHub draft that opens the private repository `mrhinkle/crosscomm-website` for visitors who have no access. The launcher stays on the review build, or cutover replaces it with a path that works for the public. Copy and download remain available. The page still does not say a report was filed.
+
+User impact: a visitor on the live site is not sent to a private-repo 404.
+
+Effort: small if the launcher is hidden when `indexable` is true. Medium if a public intake path is built.
+
+Owner: Mark decides which path the live site uses.
+
 ### Deliver consultation leads to a person
 
 Acceptance: a test message arrives at the chosen inbox or CRM, and the page tells the truth when delivery is not configured. This review site only opens the visitor's mail app.

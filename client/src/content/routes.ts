@@ -49,7 +49,7 @@ const home: RouteDef = page({
 const servicesIndex: RouteDef = page({
   id: "services",
   path: "/services",
-  title: "Services | CrossComm",
+  title: "Custom apps, AI agents, and healthcare software | CrossComm",
   description:
     "Custom apps, AI agents and automation, AI strategy, AI training, and healthcare software.",
   kind: "services",
@@ -76,7 +76,7 @@ const serviceRoutes: RouteDef[] = services.map((service) =>
 const portfolio: RouteDef = page({
   id: "portfolio",
   path: "/portfolio",
-  title: "Work | CrossComm",
+  title: "Client work: ACS CARES, Well Aware, Smithsonian | CrossComm",
   description:
     "ACS CARES, Well Aware, and a browser exhibition app for the Smithsonian National Museum of African Art.",
   kind: "portfolio",
@@ -104,7 +104,7 @@ const rest: RouteDef[] = [
   page({
     id: "approach",
     path: "/approach",
-    title: "Approach | CrossComm",
+    title: "How we plan, design, and build | CrossComm",
     description:
       "How a project moves from discovery and a plan through design, weekly builds, launch, and support.",
     kind: "approach",
@@ -114,7 +114,7 @@ const rest: RouteDef[] = [
   page({
     id: "insights",
     path: "/resources/blog",
-    title: "Insights | CrossComm",
+    title: "Writing from the CrossComm archive | CrossComm",
     description:
       "Selected writing from the CrossComm archive, with the original titles, dates, and links.",
     kind: "insights",
@@ -124,7 +124,7 @@ const rest: RouteDef[] = [
   page({
     id: "contact",
     path: "/contact",
-    title: "Contact | CrossComm",
+    title: "Start a project with CrossComm | CrossComm",
     description:
       "Email hello@crosscomm.com, call +1 919 695 3241, or open the CrossComm consultation form.",
     kind: "contact",
@@ -134,7 +134,7 @@ const rest: RouteDef[] = [
   page({
     id: "careers",
     path: "/careers",
-    title: "Careers | CrossComm",
+    title: "Careers and open roles at CrossComm | CrossComm",
     description:
       "Open roles are listed on the CrossComm careers page.",
     kind: "careers",

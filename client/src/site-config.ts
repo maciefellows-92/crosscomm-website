@@ -1,6 +1,12 @@
 /**
- * Review defaults. Cutover is an owner pull request: set indexable to true
- * and point publicOrigin at the approved host. Do not read .env files.
+ * Review defaults. indexable stays false.
+ * Going live is a coordinated cutover, not this one flag:
+ * 1. Owner sets indexable true only after the public host is approved.
+ * 2. Canonical origin must be that host (publicOrigin), not the review deployment.
+ * 3. Robots meta, sitemap, and llms.txt follow origins.indexable.
+ * 4. The hosting X-Robots-Tag header must change in the same cutover. A true flag with a noindex header still hides the site.
+ * 5. Confirm the contact form and careers URLs still resolve after DNS. They must not point at these pages and leave no real form.
+ * Do not read .env files.
  */
 export const siteConfig = {
   name: "CrossComm",

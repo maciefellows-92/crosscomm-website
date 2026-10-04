@@ -177,6 +177,29 @@ test("contact opens the mail app and the existing form, and does not submit a le
   expect(crosscommPath(await existing.first().getAttribute("href"))).toBe("/contact");
   await expect(main).toContainText(/Nothing is sent until you send it there/i);
   await expect(main).not.toContainText(/message sent|form submitted|we'll be in touch|issue created/i);
+
+  await main.getByRole("textbox", { name: "Name" }).fill("Ada Lovelace");
+  await main.getByRole("textbox", { name: "Brief" }).fill("A short internal tool for the lab.");
+  await main.getByRole("button", { name: "Copy brief" }).click();
+  await expect.poll(() => page.evaluate(() => navigator.clipboard.readText())).toContain("Name: Ada Lovelace");
+  await expect.poll(() => page.evaluate(() => navigator.clipboard.readText())).toContain("A short internal tool for the lab.");
+  await expect(main.getByRole("status")).toHaveText(
+    "Brief copied, complete. Paste it into an email to hello@crosscomm.com. Nothing was sent.",
+  );
+
+  await main.getByRole("textbox", { name: "Brief" }).fill("detail ".repeat(400));
+  await main.getByRole("button", { name: "Open in your email app" }).click();
+  await expect(main.getByRole("status")).toHaveText(
+    "This brief is too long for an email link. Copy brief keeps the full text. Paste it into an email to hello@crosscomm.com. Nothing was sent.",
+  );
+  await expect(page).toHaveURL(/\/contact\/$/);
+  await main.getByRole("button", { name: "Copy brief" }).click();
+  const copied = await page.evaluate(() => navigator.clipboard.readText());
+  expect(copied).toContain("detail ".repeat(400).trim());
+  expect(copied).toContain("Name: Ada Lovelace");
+  await expect(main.getByRole("status")).toHaveText(
+    "Brief copied, complete. Paste it into an email to hello@crosscomm.com. Nothing was sent.",
+  );
 });
 
 test("feedback can be read, copied, downloaded, and drafted, and is not sent", async ({ page }) => {
@@ -208,6 +231,7 @@ test("feedback can be read, copied, downloaded, and drafted, and is not sent", a
   expect(text).toContain("The contact phone is hard to find.");
   expect(text).not.toContain("should-not-appear");
   expect(text.toLowerCase()).toContain("submit");
+  await expect(dialog).toContainText("Download requested. Nothing was filed. If the file did not save, copy the report.");
 
   const draft = dialog.getByRole("link", { name: "Open issue draft in GitHub" });
   const href = await draft.getAttribute("href");
@@ -258,10 +282,11 @@ test("a too-long draft stays closed and explains the other ways to file it", asy
 
 test("an unknown address is a real 404", async ({ page }) => {
   const pageErrors: string[] = [];
-  const consoleErrors: string[] = [];
+  const consoleErrors: { text: string; url: string }[] = [];
   page.on("pageerror", (error) => pageErrors.push(error.message));
   page.on("console", (message) => {
-    if (message.type() === "error") consoleErrors.push(message.text());
+    if (message.type() !== "error") return;
+    consoleErrors.push({ text: message.text(), url: message.location().url });
   });
   const response = await page.goto("/review-smoke-unknown-path/");
   expect(response?.status()).toBe(404);
@@ -270,8 +295,8 @@ test("an unknown address is a real 404", async ({ page }) => {
   await expect(page.getByRole("main")).not.toContainText("Make the next thing");
   expect(pageErrors, pageErrors.join("\n")).toEqual([]);
   for (const message of consoleErrors) {
-    expect(message, message).toMatch(/404|failed to load resource/i);
-    expect(message, message).toMatch(/review-smoke-unknown-path/i);
+    expect(message.text, message.text).toMatch(/404|failed to load resource/i);
+    expect(message.url, `${message.text} @ ${message.url}`).toMatch(/\/review-smoke-unknown-path\/?/);
   }
 });
 
@@ -311,9 +336,12 @@ test("client navigation replaces the route metadata instead of stacking it", asy
   await settle(page);
   await serviceRow(page, "/services/healthcare-app-development/").click();
   await expect(page).toHaveURL(/\/services\/healthcare-app-development\/$/);
+  await expect(page.getByRole("heading", { level: 1, name: "Healthcare app development" })).toBeVisible();
+  await expect(page).toHaveTitle(/Healthcare app development/);
+  await expect(page.locator('link[rel="canonical"]')).toHaveAttribute("href", /\/services\/healthcare-app-development\/$/);
+  await expect.poll(async () => (await graphs()).join("\n")).toContain("Healthcare app development");
   const after = await graphs();
   expect(after.filter((entry) => entry.includes("App development")).length).toBe(0);
-  expect(after.join("\n")).toContain("Healthcare app development");
   expect(after.filter((entry) => entry.includes('"@type":"Service"') || entry.includes('"@type": "Service"')).length).toBe(1);
   const unmarked = await page.locator('script[type="application/ld+json"]:not([data-crosscomm-ld])').count();
   expect(unmarked).toBe(0);

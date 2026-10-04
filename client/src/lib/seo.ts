@@ -14,9 +14,14 @@ export type HeadModel = {
   jsonLd: unknown[];
 };
 
+function organizationId(origins: SiteOrigins): string {
+  return `${absoluteUrl(origins.canonicalOrigin, "/")}#organization`;
+}
+
 function organization(origins: SiteOrigins) {
   return {
     "@type": "Organization",
+    "@id": organizationId(origins),
     name: siteConfig.name,
     legalName: siteConfig.legalName,
     url: absoluteUrl(origins.canonicalOrigin, "/"),
@@ -66,7 +71,7 @@ export function headFor(route: RouteDef, origins: SiteOrigins): HeadModel {
         name: service.name,
         description: service.description,
         url: absoluteUrl(origins.canonicalOrigin, route.path),
-        provider: { "@type": "Organization", name: siteConfig.name, url: absoluteUrl(origins.canonicalOrigin, "/") },
+        provider: { "@id": organizationId(origins) },
         areaServed: "United States",
       });
     }

@@ -61,9 +61,19 @@ export function Breadcrumbs() {
   );
 }
 
-export function PageIntro({ eyebrow, title, deck }: { eyebrow: string; title: string; deck: string }) {
+export function PageIntro({
+  eyebrow,
+  title,
+  deck,
+  className = "",
+}: {
+  eyebrow: string;
+  title: string;
+  deck: string;
+  className?: string;
+}) {
   return (
-    <header className="page-intro">
+    <header className={className ? `page-intro ${className}` : "page-intro"}>
       <p className="eyebrow">{eyebrow}</p>
       <h1 tabIndex={-1}>{title}</h1>
       <p className="deck">{deck}</p>

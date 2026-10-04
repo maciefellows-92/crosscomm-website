@@ -9,20 +9,20 @@ The fifteen pages, the build, and the tests are in this repository. Visitors do 
 1. Edit a typed record. See [CONTENT-GUIDE.md](CONTENT-GUIDE.md).
 2. Open a pull request. GitHub Actions runs the quality checks. Vercel builds a preview from the same push. Those two are separate. See [DEPLOYMENT.md](DEPLOYMENT.md).
 3. Someone other than the author reviews the pages.
-4. Merge, then confirm the deployment before closing the issue.
+4. Review the preview and wait for a green quality check before merge. After merge, confirm the hosted deployment and its `version.json` SHA before closing the issue.
 
 ## What the build does
 
 - Vite 7 client build to `dist/public`, then a server build to `dist/server/entry-server.js`, then one HTML file per route plus `404.html`.
-- `client/src/generated/build-meta.ts` is rewritten before both bundles. `version.json` records the same release: `VERCEL_GIT_COMMIT_SHA`, then `GITHUB_SHA`, then `git rev-parse HEAD`, otherwise `local`. The value is a full 40-character SHA or `local`.
-- A preview server on port 4187 (`PREVIEW_PORT` overrides it; `0` is an ephemeral port for unit tests). It does not attach to a server that is already listening. Port 4173 belongs to another local site and must not be used. The server refuses decoded `..` paths and symlinks that leave `dist/public`. It sends the file's real type. A missing path is status 404 and is not the homepage.
+- `client/src/generated/build-meta.ts` is generated and gitignored. If it is missing, `scripts/ensure-build-meta.ts` writes a local fallback before typecheck, lint, test, dev, and build, so a fresh clone still typechecks. `pnpm build` rewrites it before both bundles. `version.json` records the same release: `VERCEL_GIT_COMMIT_SHA`, then `GITHUB_SHA`, then `git rev-parse HEAD`, otherwise `local`. The value is a full 40-character SHA or `local`.
+- A preview server on port 4187 (`PREVIEW_PORT` overrides it; `0` is an ephemeral port for unit tests). It does not attach to a server this process did not start. Do not borrow another project's port. The server refuses decoded `..` paths and symlinks that leave `dist/public`. It sends the file's real type. HTML, CSS, JavaScript, and other compressible text are gzip or Brotli when the request asks; images and fonts are not. A missing path is status 404 and is not the homepage.
 - The dev server is port 5173.
 - Vitest, Playwright, a smoke checker, a Lighthouse script, actionlint, and GitHub Actions.
 - `vercel.json` uses `trailingSlash: true`, output `dist/public`, and no catch-all rewrite. The default header is `X-Robots-Tag: noindex, follow`. There is no Content-Security-Policy, because a strict policy here would break hashed assets and fonts before anyone had measured it.
 
 ## Status on 4 October 2026
 
-Unit tests, lint, the production build, prerender smoke, and actionlint passed locally. The 15 known routes passed in the browser on desktop and mobile, including contact and the work filters. The repaired browser suite, Claude's visual review, remote CI, and the hosted deployment are still being checked. `pnpm lighthouse` writes a JSON file and a summary only after Chrome actually runs. It does not invent a score and it does not fail the build on a number.
+Unit tests, lint, the production build, prerender smoke, and actionlint passed locally. The 15 known routes passed in the browser on desktop and mobile, including contact and the work filters. The repaired browser suite, Claude's visual review, remote CI, and the hosted deployment are still being checked. `pnpm lighthouse` writes a JSON file and a summary only after Chrome actually runs. Local gzip and Brotli negotiation is implemented on the preview server. That is not the same as a measurement of the Vercel CDN. It does not invent a score and it does not fail the build on a number. Do not turn indexing on to raise the SEO category. The review host stays `noindex`.
 
 ## Files the build reads
 

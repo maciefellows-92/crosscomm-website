@@ -1,13 +1,12 @@
 # Deployment
 
-4 October 2026. The GitHub repository `mrhinkle/crosscomm-website` and its Vercel project already exist. Pushes to `main` and pull-request previews are connected. This file is how you publish a change, roll one back, and, later, attach a domain. It does not change DNS.
+4 October 2026. The handoff names the GitHub repository `mrhinkle/crosscomm-website` and a Vercel project. This checkout has not recorded a pushed commit, a green remote Actions run, or a hosted deployment receipt. Those stay pending until the coordinator attaches them. Do not treat this file as proof that CI or a deploy already passed. This file is how you publish a change, roll one back, and, later, attach a domain. It does not change DNS.
 
 ## Release a change
 
 1. Open a pull request from a branch. Do not edit `main` directly.
-2. Read the preview URL Vercel comments on the pull request. Confirm the page you changed.
-3. Read the GitHub quality check as well. It is a separate run. A green preview does not mean the tests passed, and a green test run does not by itself hold the deploy. Review the pull request before merge. That is the team's rule until branch protection is confirmed.
-4. After merge, open the production deployment and confirm the same page. `version.json` on that deployment is the commit SHA.
+2. Before merge, read the preview URL Vercel comments on the pull request and confirm the page you changed. Also read the GitHub quality check. A green preview does not mean the tests passed, and a green test run does not by itself hold the deploy. Both the preview review and a green quality check come before merge. That is the team's rule until branch protection is confirmed.
+3. After merge, open the production deployment and confirm the same page. `version.json` on that deployment is the commit SHA. Check that SHA only after merge.
 
 ## What is already configured
 
@@ -36,7 +35,7 @@ Vercel Git deploys run in parallel with Actions. A green workflow after a deploy
 
 The same audit recorded Vercel deployment protection as SSO for generated `.vercel.app` URLs, including the production hostname, until a custom domain is attached. A login page, a redirect to login, or a 401/403 is not a passing smoke test. Check the pages in a browser that is already signed in to Vercel. Do not call `vercel curl` for that check: it can create a bypass secret, so it is not a read-only command. Do not mint a share link or a bypass token. The manual deployed-smoke workflow only works against an origin that already returns the site without a new credential.
 
-`.github/workflows/deployed-smoke.yml` runs only when someone starts it by hand (`workflow_dispatch`) and passes an `https` origin. It is not on every push. It checks that a review host sends `noindex`, that `robots.txt` allows crawling and does not advertise a sitemap, and that an unknown path is 404.
+`.github/workflows/deployed-smoke.yml` runs only when someone starts it by hand (`workflow_dispatch`) and passes an `https` origin. It is not on every push. It reads `siteConfig.indexable` from this checkout, not the hostname. A review build must send `noindex` on both `X-Robots-Tag` and the robots meta tag. A live build must send it on neither. `robots.txt` must allow crawling. A review build must not advertise a sitemap. An unknown path must be 404. HTML smoke fails the build when `vercel.json` disagrees with `siteConfig.indexable`. The current review site stays `noindex`.
 
 ## 404 and the trailing slash
 
@@ -44,7 +43,7 @@ Unknown paths must be 404. There is no rewrite of every missing URL to `index.ht
 
 `trailingSlash: true` redirects `/services` to `/services/`. That is only a slash redirect. Deferred legacy URLs still 404 after the slash is added. See [MIGRATION.md](MIGRATION.md).
 
-The local preview server (`pnpm preview`, port 4187) is the production-shaped static server the browser tests use. Playwright starts it with `reuseExistingServer: false`, so it will not silently test whatever is already bound to that port. If 4187 is already this project's preview, stop that preview before the suite. Do not stop unrelated processes, and do not use port 4173. The preview server is not Vite's SPA fallback. It rejects a decoded `..` path and a symlink that leaves `dist/public`. The dev server is port 5173 and is not the production check. Unit tests bind an ephemeral port (`PREVIEW_PORT=0` or port `0`) and do not listen on 4187.
+The local preview server (`pnpm preview`, port 4187) is the production-shaped static server the browser tests use. Playwright starts it with `reuseExistingServer: false`, so it will not silently test whatever is already bound to that port. If 4187 is already this project's preview, stop that preview before the suite. Do not stop unrelated processes, and do not borrow another project's port. The preview server is not Vite's SPA fallback. It rejects a decoded `..` path and a symlink that leaves `dist/public`. For HTML, CSS, JavaScript, and other text it negotiates gzip or Brotli from `Accept-Encoding`, including `q=0` and an identity fallback, and it sets `Content-Length` and `Vary: Accept-Encoding`. Images and fonts stay uncompressed. That local compression is not a measurement of the Vercel CDN. The dev server is port 5173 and is not the production check. Unit tests bind an ephemeral port (`PREVIEW_PORT=0` or port `0`) and do not listen on 4187.
 
 ## Headers
 
@@ -80,7 +79,7 @@ Cutover, later and only with the owner's approval, has to change both of these o
 1. Set `siteConfig.indexable` to true, so canonicals move to `https://www.crosscomm.com` and `robots.txt` advertises the sitemap.
 2. Remove or replace the `X-Robots-Tag: noindex, follow` header in `vercel.json`.
 
-Do that on the approved host only. Do not flip it to make a preview look "more real".
+Do that on the approved host only. Do not flip it to make a preview look "more real". The local check fails if only one of the two changes. The current files keep `indexable` false and `X-Robots-Tag: noindex, follow`.
 
 ## Rollback
 
@@ -111,4 +110,4 @@ When that work is approved, decide apex versus www first (the legacy list is ape
 
 ## What this lane did not verify
 
-A hosted deployment URL, a green GitHub Actions run, branch protection, and a Lighthouse score. `pnpm lighthouse` writes `reports/lighthouse/home.json` and `reports/lighthouse/summary.md` only after the Lighthouse CLI actually runs against the local preview. It does not invent a score and it does not fail the build on a number.
+A hosted deployment URL, a green GitHub Actions run, branch protection, and a Lighthouse score. `pnpm lighthouse` writes `reports/lighthouse/home.json` and `reports/lighthouse/summary.md` only after the Lighthouse CLI actually runs against the local preview. Local compression on that preview is implemented. It is not proof of what the Vercel CDN sends, and it is not field data. The script does not invent a score and it does not fail the build on a number. Do not change `noindex` to chase a higher SEO category.

@@ -11,7 +11,7 @@ type Brief = {
 
 const empty: Brief = { name: "", email: "", organization: "", message: "" };
 
-function mailtoHref(brief: Brief): string {
+function briefText(brief: Brief): string {
   const lines = [
     brief.name.trim() ? `Name: ${brief.name.trim()}` : "",
     brief.email.trim() ? `Email: ${brief.email.trim()}` : "",
@@ -19,8 +19,11 @@ function mailtoHref(brief: Brief): string {
   ].filter(Boolean);
   if (lines.length) lines.push("");
   lines.push(brief.message.trim());
-  const body = lines.join("\n");
-  return `mailto:${siteConfig.email}?subject=${encodeURIComponent("Project brief for CrossComm")}&body=${encodeURIComponent(body)}`;
+  return lines.join("\n");
+}
+
+function mailtoHref(brief: Brief): string {
+  return `mailto:${siteConfig.email}?subject=${encodeURIComponent("Project brief for CrossComm")}&body=${encodeURIComponent(briefText(brief))}`;
 }
 
 export function ContactPage() {
@@ -39,11 +42,26 @@ export function ContactPage() {
     }
     const href = mailtoHref(brief);
     if (href.length > 1900) {
-      setNotice(`This brief is too long for an email link. Email ${siteConfig.email} directly. Nothing was sent.`);
+      setNotice(
+        `This brief is too long for an email link. Copy brief keeps the full text. Paste it into an email to ${siteConfig.email}. Nothing was sent.`,
+      );
       return;
     }
     setNotice("Your email app should open with this draft. Nothing is sent until you send it there.");
     window.location.href = href;
+  }
+
+  async function copyBrief() {
+    if (!brief.message.trim()) {
+      setNotice("Write a short brief first. Nothing was sent.");
+      return;
+    }
+    try {
+      await navigator.clipboard.writeText(briefText(brief));
+      setNotice(`Brief copied, complete. Paste it into an email to ${siteConfig.email}. Nothing was sent.`);
+    } catch {
+      setNotice("Copy failed. The full brief is still in the form. Nothing was sent.");
+    }
   }
 
   return (
@@ -104,9 +122,14 @@ export function ContactPage() {
                 onChange={(event) => update("message", event.target.value)}
               />
             </label>
-            <button type="submit" className="btn btn-deep">
-              Open in your email app
-            </button>
+            <div className="dialog-actions">
+              <button type="submit" className="btn btn-deep">
+                Open in your email app
+              </button>
+              <button type="button" className="btn btn-line" onClick={copyBrief}>
+                Copy brief
+              </button>
+            </div>
             <p className="status" role="status">
               {notice}
             </p>
