@@ -1,0 +1,57 @@
+[
+  {
+    "title": "Decide every legacy URL before cutover",
+    "labels": ["P1", "cutover"],
+    "body": "Acceptance: each of the 138 inventoried URLs has an approved destination or an explicit 404, with no rule that sends unrelated URLs to the homepage. The index switch, if approved, flips siteConfig.indexable and the X-Robots-Tag header together, and only on the approved host.\n\nUser impact: old bookmarks and search results either land on the right page or fail honestly. They do not all become the homepage.\n\nEffort: a review of the 123 deferred URLs, then redirects only where a destination is named. Days to a couple of weeks.\n\nOwner: Mark decides destinations. Macie can draft the map after she has access. An engineer implements the redirects."
+  },
+  {
+    "title": "Approve legal and privacy text",
+    "labels": ["P1", "cutover"],
+    "body": "Acceptance: the owner supplies the privacy and terms text, or explicitly says those pages stay off the site. No customer legal text is pasted from the current site without that approval.\n\nUser impact: visitors either see approved policies or no fake policy pages.\n\nEffort: small once the text exists. Blocked until then.\n\nOwner: Mark, with whoever at CrossComm owns the legal wording."
+  },
+  {
+    "title": "Deliver consultation leads to a person",
+    "labels": ["P1", "cutover"],
+    "body": "Acceptance: a test message arrives at the chosen inbox or CRM, and the page tells the truth when delivery is not configured. This review site only opens the visitor's mail app and says nothing is sent until they send it.\n\nUser impact: a consultation request is not lost, and the site does not claim a message was received when it was not.\n\nEffort: medium, after a destination is chosen.\n\nOwner: Mark chooses the destination. Engineering wires it. Do not add a secret during review."
+  },
+  {
+    "title": "Grant Macie Fellows access to the private repository",
+    "labels": ["P1", "cutover"],
+    "body": "Acceptance: Macie can open this private repository and a pull request. Access is an invite, not a file in the repo. A private fork is not a substitute: it stays tied to upstream access and cannot be transferred on its own.\n\nUser impact: she can review and propose changes instead of reading a handoff she cannot open.\n\nEffort: small. One invite.\n\nOwner: Mark."
+  },
+  {
+    "title": "Confirm rights to the case-study images",
+    "labels": ["P1", "cutover"],
+    "body": "Acceptance: CrossComm confirms the asset rights for the six WebP files in client/public/images/. They may stay on a public site, or they are removed and the pages say the photograph is unavailable. Generated stand-ins are not captioned as the client's product.\n\nUser impact: the case studies either show the real public photographs with permission or they do not pretend to.\n\nEffort: a decision. Blocked on the owner and, if needed, the clients.\n\nOwner: Mark, confirming with CrossComm."
+  },
+  {
+    "title": "Measure the current site, and index the review host only with approval",
+    "labels": ["P1", "cutover"],
+    "body": "Acceptance: Search Console and analytics for the existing crosscomm.com site can be connected before this review host is indexed. A person can name the property and the date the baseline was taken. Indexing the review host still requires an explicit approval, and that host stays noindex until then. A login wall on the Vercel URL is not a measurement pass.\n\nUser impact: the team can learn from the current site now, without putting the review copy into Google.\n\nEffort: medium. The current-site baseline does not wait on cutover.\n\nOwner: Mark approves any new property and the review-host index switch. Macie runs the weekly review once she has access."
+  },
+  {
+    "title": "Add expert bios and author bylines",
+    "labels": ["P2", "growth"],
+    "body": "Acceptance: a named person approves their bio, and any new article shows that author and a review date. The five existing posts keep their original bylines. No invented experts.\n\nUser impact: a reader can see who stands behind a new article.\n\nEffort: medium. Needs the people, not a template.\n\nOwner: Macie drafts after she has access. Each named expert approves their own bio."
+  },
+  {
+    "title": "Publish sourced outcomes or keep results qualitative",
+    "labels": ["P2", "growth"],
+    "body": "Acceptance: each case study either keeps the qualitative results already sourced or adds a number that the client and the original page support. ACS CARES still has no invented adoption figure. Well Aware population figures stay attributed to the case study.\n\nUser impact: proof gets stronger only when it is real.\n\nEffort: medium to large. Blocked on client-approved numbers.\n\nOwner: Macie can draft. CrossComm and the client approve any new number."
+  },
+  {
+    "title": "Capture a SEMrush baseline from a working export",
+    "labels": ["P2", "growth"],
+    "body": "Acceptance: a US desktop and mobile organic export is saved with region, device, and the date it was retrieved. The 4 October 2026 attempt is not that baseline: it returned ERROR 120 and then WouldBlock, which are failures, not traffic numbers.\n\nUser impact: later keyword choices can be checked against demand instead of guesses.\n\nEffort: small once the connection works. Do not buy a plan from this task.\n\nOwner: Mark restores access. Macie files the export."
+  },
+  {
+    "title": "Decide whether the site needs a CMS",
+    "labels": ["P2", "growth"],
+    "body": "Acceptance: the owner either keeps typed files and pull requests, or names a CMS and who will run it. The starter does not add one.\n\nUser impact: editors know where a sentence changes. A CMS is not assumed.\n\nEffort: a decision. Building one would be a separate project.\n\nOwner: Mark decides. Macie can recommend after she has edited the files."
+  },
+  {
+    "title": "Evaluate authenticated feedback intake for external reviewers",
+    "labels": ["P2", "growth"],
+    "body": "Acceptance: a reviewer without a GitHub seat can file a report and see a real receipt only after the server has stored or delivered it. Any credential stays on the server, and only if Mark approves one. The route has abuse protection that survives a cold start, and the dialog says what will be sent before the person agrees. Copy and download still work when the server is off or refuses. The page never says the report was filed if it was not. The report is not implemented automatically.\n\nUser impact: someone outside the repository can send a note, and can still keep a copy if that path is down.\n\nEffort: medium, and optional. The GitHub draft link remains the path until this is approved.\n\nOwner: Mark decides whether a server credential is allowed. Engineering implements it."
+  }
+]

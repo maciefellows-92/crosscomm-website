@@ -1,0 +1,52 @@
+# CrossComm review site
+
+This is the private review site for a new CrossComm website. You can click through fifteen pages: home, five services, three case studies, approach, insights, contact, and careers. It is not the live site at [crosscomm.com](https://www.crosscomm.com/). Search engines are asked not to index this copy. Visitors do not sign in. There is no account on the site itself.
+
+The other known CrossComm URLs are listed and left alone. They are not redirected to the homepage.
+
+## Reviewing and editing
+
+Ask Mark Hinkle to invite your GitHub username to the private repository `mrhinkle/crosscomm-website`, and to the Vercel project if you need the hosting dashboard. Write access is enough to open a branch and a pull request. The repository and the Vercel project already exist. Nothing in this folder grants that invite by itself.
+
+Once you can open the repo:
+
+1. Read a page against the live CrossComm page it came from. [docs/CONTENT-GUIDE.md](docs/CONTENT-GUIDE.md) says where each sentence lives.
+2. Change the typed record, not a generated HTML file. Open a pull request. Someone else reviews it. [docs/FEEDBACK.md](docs/FEEDBACK.md) is the same loop when the note starts from the on-page report.
+3. Merge after review. Confirm the preview, then the production deployment, before you close the issue. [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md) covers hosting, rollback, and a later domain move.
+4. [docs/MACIE-HANDOFF.md](docs/MACIE-HANDOFF.md) is the longer reading guide. [docs/BACKLOG.md](docs/BACKLOG.md) is what is still a decision, not a defect in the pages you can click.
+
+## Running it locally
+
+Node 24 (`.nvmrc`) and pnpm 10.33.0.
+
+```bash
+corepack enable
+corepack prepare pnpm@10.33.0 --activate
+pnpm install --frozen-lockfile
+pnpm dev
+```
+
+| Command | What it does | Address |
+| --- | --- | --- |
+| `pnpm dev` | Vite dev server | http://127.0.0.1:5173 |
+| `pnpm build` | Client bundle, server render, one HTML file per route | writes `dist/public` |
+| `pnpm preview` | Static server for that folder. Unknown URLs are 404. It does not reuse a process already listening. | http://127.0.0.1:4187 |
+| `pnpm test` | Unit tests | |
+| `pnpm test:e2e` | Browser tests against the preview server | needs a build and Playwright's Chromium |
+| `pnpm smoke` | Checks the built HTML | needs a build |
+| `pnpm lighthouse` | One real Lighthouse run. Not a pass/fail score. | needs a build and Chrome |
+| `pnpm check` | Typecheck, lint, workflow lint, unit tests, build, smoke, browser tests | |
+
+Playwright's browser is not in the lockfile. Install it once with `pnpm exec playwright install chromium`. Do not point the preview at port 4173. That port is used by another local site.
+
+## What is in the repository
+
+Typed copy and routes, the pages, pictures in `client/public/`, the build, tests, GitHub Actions, and these docs. How a page is assembled is in [docs/PLAN.md](docs/PLAN.md).
+
+## Status on 4 October 2026
+
+| Checked on this machine | 30 unit tests passed. Lint, the production build, prerender smoke, and actionlint passed. On the built site, the 15 known pages loaded on a 1440px desktop and a 390px phone with no sideways scroll and no console errors. Contact and the work filters passed. |
+| Still in progress | The repaired browser suite, Claude's visual review, a remote GitHub Actions run, and a check of the hosted Vercel deployment. Those results are not in yet. Do not treat this table as a green remote deploy. |
+| Still an owner decision | Your GitHub username on the repo, legal pages, permission for the case-study photographs, analytics, DNS, and whether this host should ever be indexed. |
+
+Do not put secrets, `.env` files, or customer legal text in this repo.

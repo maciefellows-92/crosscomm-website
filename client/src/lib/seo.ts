@@ -2,6 +2,7 @@ import { services, serviceBySlug } from "../content/services";
 import { projectBySlug } from "../content/projects";
 import { insights } from "../content/insights";
 import { publicRoutes, type RouteDef } from "../content/routes";
+import { buildMeta } from "../generated/build-meta";
 import { absoluteUrl, siteConfig, type SiteOrigins } from "../site-config";
 
 export type HeadModel = {
@@ -91,7 +92,10 @@ function escapeAttr(value: string): string {
 export function renderHead(route: RouteDef, origins: SiteOrigins): string {
   const head = headFor(route, origins);
   const json = head.jsonLd
-    .map((entry) => `<script type="application/ld+json">${JSON.stringify(entry).replaceAll("<", "\\u003c")}</script>`)
+    .map(
+      (entry) =>
+        `<script type="application/ld+json" data-crosscomm-ld="true">${JSON.stringify(entry).replaceAll("<", "\\u003c")}</script>`,
+    )
     .join("");
   return [
     `<title>${escapeAttr(head.title)}</title>`,
@@ -106,7 +110,7 @@ export function renderHead(route: RouteDef, origins: SiteOrigins): string {
     `<meta property="og:image" content="${escapeAttr(head.ogImage)}" />`,
     `<meta property="og:image:width" content="1200" />`,
     `<meta property="og:image:height" content="630" />`,
-    `<meta property="og:image:alt" content="CrossComm wordmark on a dark field with an orange cross." />`,
+    `<meta property="og:image:alt" content="CrossComm wordmark on a dark field, with AI strategy, custom apps, and human-centered product development, plus Durham and Cleveland." />`,
     `<meta name="twitter:card" content="summary_large_image" />`,
     `<meta name="twitter:title" content="${escapeAttr(head.title)}" />`,
     `<meta name="twitter:description" content="${escapeAttr(head.description)}" />`,
@@ -116,7 +120,7 @@ export function renderHead(route: RouteDef, origins: SiteOrigins): string {
 }
 
 export function releaseToken(): string {
-  return "local";
+  return buildMeta.release;
 }
 
 export function robotsTxt(origins: SiteOrigins): string {
@@ -155,9 +159,9 @@ export function llmsTxt(origins: SiteOrigins): string {
   const lines = [
     `# ${siteConfig.name}`,
     "",
-    "> A directory of pages on this website. It is not a ranking claim, a citation promise, or a statement that any model should prefer this site.",
+    "> AI strategy, custom apps, and human-centered product development. A directory of pages on this website.",
     "",
-    `This deployment is ${origins.indexable ? "marked indexable" : "a review build marked noindex"}.`,
+    origins.indexable ? "This deployment is indexable." : "This deployment is a review build and is marked noindex.",
     "",
     "## Pages",
     ...publicRoutes.map((route) => `- [${route.title}](${absoluteUrl(origin, route.path)}): ${route.description}`),

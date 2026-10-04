@@ -35,15 +35,21 @@ export type SiteOrigins = {
   canonicalOrigin: string;
 };
 
-export function resolveDeploymentOrigin(env: Record<string, string | undefined> = process.env): string {
-  const raw = env.VERCEL_PROJECT_PRODUCTION_URL?.trim();
+function readEnv(env?: Record<string, string | undefined>): Record<string, string | undefined> {
+  if (env) return env;
+  const proc = (globalThis as { process?: { env?: Record<string, string | undefined> } }).process;
+  return proc?.env ?? {};
+}
+
+export function resolveDeploymentOrigin(env?: Record<string, string | undefined>): string {
+  const raw = readEnv(env).VERCEL_PROJECT_PRODUCTION_URL?.trim();
   if (!raw) return siteConfig.configuredDeploymentOrigin;
   const host = raw.replace(/^https?:\/\//, "").replace(/\/.*$/, "").trim();
   if (!/^[a-z0-9.-]+(?::\d+)?$/i.test(host)) return siteConfig.configuredDeploymentOrigin;
   return `https://${host}`;
 }
 
-export function resolveOrigins(env: Record<string, string | undefined> = process.env): SiteOrigins {
+export function resolveOrigins(env?: Record<string, string | undefined>): SiteOrigins {
   const deploymentOrigin = resolveDeploymentOrigin(env);
   const canonicalOrigin = siteConfig.indexable ? siteConfig.publicOrigin : deploymentOrigin;
   return {

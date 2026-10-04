@@ -40,7 +40,7 @@ const home: RouteDef = page({
   path: "/",
   title: "CrossComm | AI strategy, custom apps, and product development",
   description:
-    "CrossComm, founded in 1998 in Durham and Cleveland, builds AI strategy, custom apps, and human-centered products for ambitious teams.",
+    "CrossComm builds AI strategy, custom apps, and human-centered products for ambitious teams. Founded in 1998. Offices in Durham, North Carolina and Cleveland, Ohio.",
   kind: "home",
   inSitemap: true,
   crumbs: [],
@@ -51,7 +51,7 @@ const servicesIndex: RouteDef = page({
   path: "/services",
   title: "Services | CrossComm",
   description:
-    "App development, AI agents and automation, AI strategy, AI training, and healthcare app development from CrossComm.",
+    "Custom apps, AI agents and automation, AI strategy, AI training, and healthcare software.",
   kind: "services",
   inSitemap: true,
   crumbs: [{ name: "Services", path: "/services/" }],
@@ -78,7 +78,7 @@ const portfolio: RouteDef = page({
   path: "/portfolio",
   title: "Work | CrossComm",
   description:
-    "Three CrossComm projects with sources: ACS CARES, Well Aware, and the Smithsonian National Museum of African Art.",
+    "ACS CARES, Well Aware, and a browser exhibition app for the Smithsonian National Museum of African Art.",
   kind: "portfolio",
   inSitemap: true,
   crumbs: [{ name: "Work", path: "/portfolio/" }],
@@ -106,7 +106,7 @@ const rest: RouteDef[] = [
     path: "/approach",
     title: "Approach | CrossComm",
     description:
-      "How a CrossComm project moves from discovery and a plan through design, weekly builds, launch, and support.",
+      "How a project moves from discovery and a plan through design, weekly builds, launch, and support.",
     kind: "approach",
     inSitemap: true,
     crumbs: [{ name: "Approach", path: "/approach/" }],
@@ -116,7 +116,7 @@ const rest: RouteDef[] = [
     path: "/resources/blog",
     title: "Insights | CrossComm",
     description:
-      "A short list of existing CrossComm articles, with original titles, dates, and links. No new articles are invented here.",
+      "Selected writing from the CrossComm archive, with the original titles, dates, and links.",
     kind: "insights",
     inSitemap: true,
     crumbs: [{ name: "Insights", path: "/resources/blog/" }],
@@ -126,7 +126,7 @@ const rest: RouteDef[] = [
     path: "/contact",
     title: "Contact | CrossComm",
     description:
-      "Email hello@crosscomm.com, call +1 919 695 3241, or open CrossComm's existing consultation form. This page does not submit a form of its own.",
+      "Email hello@crosscomm.com, call +1 919 695 3241, or open the CrossComm consultation form.",
     kind: "contact",
     inSitemap: true,
     crumbs: [{ name: "Contact", path: "/contact/" }],
@@ -136,7 +136,7 @@ const rest: RouteDef[] = [
     path: "/careers",
     title: "Careers | CrossComm",
     description:
-      "Open roles are listed on CrossComm's existing careers page. This review site does not post vacancies of its own.",
+      "Open roles are listed on the CrossComm careers page.",
     kind: "careers",
     inSitemap: true,
     crumbs: [{ name: "Careers", path: "/careers/" }],
@@ -148,7 +148,7 @@ export const notFoundRoute: RouteDef = {
   path: "/404.html",
   outputFile: "404.html",
   title: "Page not found | CrossComm",
-  description: "That page is not on this CrossComm review site.",
+  description: "That page is not on the CrossComm site.",
   kind: "not-found",
   inSitemap: false,
   crumbs: [],
