@@ -14,7 +14,7 @@ Provenance and hashes live only in [docs/SOURCES.md](docs/SOURCES.md). Do not co
 | `client/public/favicon.svg` | Original SVG favicon, linked from `client/index.html`. |
 | `client/public/og.png` | 1200×630 social card. Rendered offline from `scripts/og-card.html` by `scripts/render-og.ts`. Same logo file, unchanged, on slate with an 8px copper rule and the line “Make the next thing.” Not a public route. |
 
-The card template sets the headline in Georgia, then Iowan Old Style, at 64px. That is the only system-font exception. Pages use the self-hosted families below. The template is not loaded with Fraunces, so a re-render will not pick up a webfont change unless the template is edited too.
+The card template sets the headline in self-hosted Manrope 600 at 64px. `scripts/og-card.html` loads `manrope-latin-600-normal.woff2` from `node_modules` with a file URL relative to the template. It does not request a font from the network. `scripts/render-og.ts` waits until that face is loaded and `document.fonts.ready` has settled before it writes `client/public/og.png`.
 
 ## Color
 
@@ -45,14 +45,14 @@ The ratios below are contrast math already recorded for these hex pairs. They ar
 
 ## Type
 
-Self-hosted, first five lines of `client/src/styles.css`: Fraunces latin 600 and italic 600, Source Sans 3 latin 400 and 600, IBM Plex Mono latin 400. Stacks are `--serif`, `--sans`, and `--mono`, each with a system fallback. Body is Source Sans 3 at `1.125rem` / line-height 1.6. Headings are Fraunces 600, line-height 1.05, letter-spacing `-0.03em`, unless a class overrides them.
+Self-hosted, first four lines of `client/src/styles.css`: Manrope latin 600 (`@fontsource/manrope` 5.3.0), Source Sans 3 latin 400 and 600, IBM Plex Mono latin 400. Stacks are `--display`, `--sans`, and `--mono`, each with a system fallback. `--display` is `"Manrope", "Segoe UI", sans-serif`. Body is Source Sans 3 at `1.125rem` / line-height 1.6. Headings and other display text are Manrope 600, roman, line-height 1.05, letter-spacing `-0.03em`, unless a class overrides them. There is no italic display cut.
 
 `clamp()` sizes are copied from the stylesheet. At a 16px root, `1rem` is 16px. These are current values, not a new scale.
 
 | Role | Rule | Size | Line height |
 | --- | --- | --- | --- |
 | Home hero title | `.display` | `clamp(3.25rem, 7vw, 6.875rem)` (52px to 110px) | 0.92 |
-| “Make it matter.” Italic, weight 600, copper. | `.line-matter` | inherits `.display` | 0.92, inherited |
+| “Make it matter.” Roman, weight 600, copper. Not italic. | `.line-matter` | inherits `.display` | 0.92, inherited |
 | Other page titles | `.page-intro h1` | `clamp(3rem, 7vw, 5.75rem)` | 1.05 |
 | Service titles | `.service-intro h1` | `clamp(2.6rem, 4.4vw, 4.15rem)` | 1.05 |
 | Section titles | `.section-head h2`, `.band h2`, `.faqs h2`. Interior `h1` sizes are the rows above; `.page-intro h1` is overridden later in the stylesheet. | `clamp(2.4rem, 5vw, 4.25rem)` | 1.05 |
@@ -79,7 +79,7 @@ Vertical space is fluid. Examples from the same file: home hero padding `clamp(2
 
 The header is sticky, `--header` is `4.75rem`, and a 1px `--brand-blue` rule sits on its bottom edge. Desktop links are Services, Work, Approach, and Insights, in ice at `1.05rem`, plus a copper “Let’s talk”. The current page gets an inset brand-blue underline. “Let’s talk” uses an ice underline instead, so the copper button does not grow a blue bar.
 
-The mobile menu is `position: fixed` and, until placed, sits at `top: 100dvh` with `visibility: hidden`. When open, `client/src/components/Shell.tsx` sets `--nav-top` to the header’s bottom edge and adds `data-placed` so the panel becomes visible under the real header. Links there are Fraunces at `2.4rem`. The menu closes on Escape and when the viewport reaches 900px. Without JavaScript, `.nav-noscript` shows the same destinations in a wrapping row.
+The mobile menu is `position: fixed` and, until placed, sits at `top: 100dvh` with `visibility: hidden`. When open, `client/src/components/Shell.tsx` sets `--nav-top` to the header’s bottom edge and adds `data-placed` so the panel becomes visible under the real header. Links there are Manrope 600 at `2.4rem`. The menu closes on Escape and when the viewport reaches 900px. Without JavaScript, `.nav-noscript` shows the same destinations in a wrapping row.
 
 ## Components
 
@@ -88,7 +88,7 @@ The mobile menu is `position: fixed` and, until placed, sits at `top: 100dvh` wi
 - **Ghost** (`.btn-ghost`): ice outline and label for use on dark bands. Hover fills ice with slate text. `.btn-paper` is the ice-filled button on dark bands (slate label; hover fills white). It is not a paper color.
 - **Text links** (`.text-link`): slate, weight 600, no underline. Hover turns the label copper and, when motion is allowed, nudges the arrow 4px.
 - **Disabled**: `opacity: 0.55` and `cursor: not-allowed`.
-- **Services**: numbered rows, copper Fraunces index, title, copy, arrow. The whole row is one link.
+- **Services**: numbered rows, copper Manrope 600 index, title, copy, arrow. The whole row is one link.
 - **Cases**: photograph in a 16/11 well (`.media`), pale teal behind the crop, mono uppercase caption, teal-deep tag with a `--line` border, then the title. `ProjectCard` in `client/src/components/chrome.tsx` uses a plain `p.caption` with no dot. The 0.45rem copper dot (`.sq`) is the home hero caption only. The home hero crop is 5/4, and 3/2 with a 280px cap from 960px. The case-study hero is 16/9. ACS CARES is the large home card (4/5 in that slot), with its own object position, not a fake device. Well Aware uses `--photo-matte` behind the image. The six files are `client/public/images/`. Alt text stays on the project record. Do not generate a picture and caption it as the client’s product. Rights are still open. See [docs/BACKLOG.md](docs/BACKLOG.md).
 - **FAQ**: question in an `h3`, answer in a visible paragraph. Not a disclosure widget.
 - **Contact**: fields are white with a `--slate-soft` border. The composer opens a `mailto:` draft or copies the brief. The status line says the mail app must send it. Nothing is stored here. The consultation form is the existing CrossComm form, opened in a new tab from a pale teal panel. A lead inbox is not wired. See [docs/BACKLOG.md](docs/BACKLOG.md).
