@@ -13,8 +13,7 @@ export function HomePage() {
       <div className="wrap hero">
         <p className="eyebrow">Durham, North Carolina · Cleveland, Ohio</p>
         <h1 className="display" tabIndex={-1}>
-          <span className="line">Make the next thing.</span>
-          <span className="line line-matter">Make it matter.</span>
+          <span className="line">We make great bourbon.</span>
         </h1>
         <div className="hero-body">
           <div className="hero-copy">
