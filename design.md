@@ -2,7 +2,7 @@
 
 The working design reference for the CrossComm review site, based on the implementation as of 4 October 2026. Maintain it alongside changes to the site. This documents the review build; it is not a company-wide brand approval.
 
-The direction for this review build is an editorial technology studio: cool blue-grey and ice fields, the original CrossComm wordmark, a restrained copper complement, and muted teal plus the original favicon blue as accents. That continues three choices already made for the build: keep the existing public logo, use a cool blue-grey field with those complements, and share the React/Vite and content-record architecture, rather than inventing a new one. CrossComm paths follow its own legacy URL inventory. Do not add purple gradients, glowing orbs, large orange panels, or stock dashboard charts.
+Fonts and the navy and orange come from the CrossComm brand templates (Google Drive, CrossComm Branding / Final): Archivo Narrow bold for headings, Open Sans for body, Dark Navy `#272F39`, Orange `#F2994A`. The direction for this review build is an editorial technology studio on that brand: navy and ice fields, the original CrossComm wordmark, brand orange for primary actions with a deeper orange for text on light surfaces, and muted teal plus the original favicon blue as accents. That continues three choices already made for the build: keep the existing public logo, use a cool blue-grey field with those complements, and share the React/Vite and content-record architecture, rather than inventing a new one. CrossComm paths follow its own legacy URL inventory. Do not add purple gradients, glowing orbs, large orange panels, or stock dashboard charts.
 
 ## Mark
 
@@ -12,9 +12,9 @@ Provenance and hashes live only in [docs/SOURCES.md](docs/SOURCES.md). Do not co
 | --- | --- |
 | `client/public/logo.png` | Original white wordmark. Intrinsic size 676×129. Header and footer render it at 205px wide, height automatic, in `.logo img` (`client/src/styles.css`). No stretch, filter, or recolor. Home link name is “CrossComm home” (`client/src/components/chrome.tsx`). |
 | `client/public/favicon.svg` | Original SVG favicon, linked from `client/index.html`. |
-| `client/public/og.png` | 1200×630 social card. Rendered offline from `scripts/og-card.html` by `scripts/render-og.ts`. Same logo file, unchanged, on slate with an 8px copper rule and the line “Make the next thing.” Not a public route. |
+| `client/public/og.png` | 1200×630 social card. Rendered offline from `scripts/og-card.html` by `scripts/render-og.ts`. Same logo file, unchanged, on brand navy with an 8px brand-orange rule and the line “Make the next thing.” Not a public route. |
 
-The card template sets the headline in self-hosted Manrope 600 at 64px. `scripts/og-card.html` loads `manrope-latin-600-normal.woff2` from `node_modules` with a file URL relative to the template. It does not request a font from the network. `scripts/render-og.ts` waits until that face is loaded and `document.fonts.ready` has settled before it writes `client/public/og.png`.
+The card template sets the headline in self-hosted Archivo Narrow 700 at 64px. `scripts/og-card.html` loads `archivo-narrow-latin-700-normal.woff2` from `node_modules` with a file URL relative to the template. It does not request a font from the network. `scripts/render-og.ts` waits until that face is loaded and `document.fonts.ready` has settled before it writes `client/public/og.png`.
 
 ## Color
 
@@ -24,13 +24,15 @@ Tokens are the custom properties on `:root` in `client/src/styles.css`. Hex valu
 | --- | --- | --- |
 | `--ice` | `#f2f5f7` | Page background. Selection text on slate. |
 | `--ice-deep` | `#e3eaf0` | Review banner, fallback note, footer tagline. |
-| `--slate` | `#273743` | Body text, header, footer, dark bands. |
+| `--slate` | `#272f39` | Brand Dark Navy. Body text, header, footer, dark bands, label on orange controls. |
 | `--slate-soft` | `#465d6e` | Secondary text. Also the border of inputs and textareas. |
 | `--line` | `#cad5de` | Dividers and decorative rules. Not the field border. |
-| `--copper` | `#a64b2a` | Default links, primary buttons, display accent, service numbers. |
-| `--copper-hover` | `#84361c` | Hover for copper links and primary buttons on light surfaces. |
-| `--copper-light` | `#d89570` | Footer links on slate only. Not body text on ice. |
-| `--white` | `#fcfdfe` | Label on copper controls. Footer link hover. |
+| `--copper` | `#9b5518` | Deeper brand-hue orange for text on light surfaces: default links, display accent, service numbers. Brand orange itself is too light for text on ice (2.03:1). |
+| `--copper-hover` | `#854914` | Hover for copper links on light surfaces. |
+| `--copper-light` | `#f2994a` | Brand Orange as text on navy: footer links, “Make it matter.” in the home hero. Not text on ice. |
+| `--orange` | `#f2994a` | Brand Orange fill for primary controls (`.btn-deep`, `.talk`), with a navy label. |
+| `--orange-hover` | `#f6b37a` | Hover fill for primary controls. |
+| `--white` | `#fcfdfe` | Footer link hover. Preview and code wells. |
 | `--teal-pale` | `#e1eef0` | Occasional panel and photo well. |
 | `--teal-deep` | `#265865` | Text on pale teal panels, and category tag labels (those tags also sit on ice). |
 | `--brand-blue` | `#89b6d5` | Header rule, current-page underline, focus ring on dark chrome. Not small text on ice. |
@@ -38,17 +40,17 @@ Tokens are the custom properties on `:root` in `client/src/styles.css`. Hex valu
 | `--photo-matte` | `#123f4a` | Well Aware card well only (`.slug-well-aware .media`). |
 | `--slate-deep` | `#1b2831` | Body of the home hero agent panel (`.agent-steps`) only. |
 
-On dark slate, footer anchors use `--copper-light` and turn `--white` on hover. Header navigation links are `--ice`, not light copper. Primary buttons stay `--white` on copper and on copper hover. The feedback dialog forces its links back to copper, because it sits on ice inside the dark footer.
+On dark slate, footer anchors use `--copper-light` and turn `--white` on hover. Header navigation links are `--ice`, not light copper. Primary buttons are a navy label on `--orange`, and on `--orange-hover`, everywhere, including the report dialog. The feedback dialog forces its links back to copper, because it sits on ice inside the dark footer.
 
 The home hero band draws its grid and sweep line in brand blue at 9% and 55% opacity, and the agent panel border in brand blue at 28%. Those are decoration, not text.
 
 Two colors are not tokens: the belief-list rule `#9db8bc`, and the dialog backdrop `rgba(39, 55, 67, 0.72)` (slate at 72% opacity).
 
-The ratios below are contrast math already recorded for these hex pairs. They are not a new measurement from this documentation pass, and they are not an axe or browser audit: slate on ice 11.19:1, slate-soft on ice 6.29:1, copper on ice 5.24:1, white on copper 5.63:1, white on copper hover 8.16:1, deep teal on pale teal 6.63:1, light copper on slate 4.93:1, brand blue on slate 5.67:1, copper on pale teal 4.83:1, danger on ice 9.49:1. Design targets are 4.5:1 for body text, 3:1 for large text, and 3:1 for focus indicators and other essential control boundaries. A pair meeting that math is not conformance.
+The ratios below are WCAG contrast math for these hex pairs, computed when the brand colors were applied. They are not an axe or browser audit: slate on ice 12.36:1, slate-soft on ice 6.29:1, copper on ice 5.17:1, copper hover on ice 6.48:1, slate on orange 6.08:1, slate on orange hover 7.51:1, deep teal on pale teal 6.63:1, orange on slate 6.08:1, orange on slate-deep 7.28:1, brand blue on slate 6.26:1, copper on pale teal 4.77:1, danger on ice 9.49:1. Design targets are 4.5:1 for body text, 3:1 for large text, and 3:1 for focus indicators and other essential control boundaries. A pair meeting that math is not conformance.
 
 ## Type
 
-Self-hosted, first four lines of `client/src/styles.css`: Manrope latin 600 (`@fontsource/manrope` 5.3.0), Source Sans 3 latin 400 and 600, IBM Plex Mono latin 400. Stacks are `--display`, `--sans`, and `--mono`, each with a system fallback. `--display` is `"Manrope", "Segoe UI", sans-serif`. Body is Source Sans 3 at `1.125rem` / line-height 1.6. Headings and other display text are Manrope 600, roman, line-height 1.05, letter-spacing `-0.03em`, unless a class overrides them. There is no italic display cut.
+Self-hosted, first four lines of `client/src/styles.css`: Archivo Narrow latin 700 (`@fontsource/archivo-narrow` 5.3.0), Open Sans latin 400 and 600 (`@fontsource/open-sans` 5.3.0), IBM Plex Mono latin 400. Archivo Narrow and Open Sans are the brand fonts. Stacks are `--display`, `--sans`, and `--mono`, each with a system fallback. `--display` is `"Archivo Narrow", "Arial Narrow", "Helvetica Neue", sans-serif`. Body is Open Sans at `1.125rem` / line-height 1.6. Headings and other display text are Archivo Narrow bold (rules ask for 600; only the 700 face is loaded, so 700 renders), roman, line-height 1.05, letter-spacing `-0.01em`, unless a class overrides them. There is no italic display cut.
 
 `clamp()` sizes are copied from the stylesheet. At a 16px root, `1rem` is 16px. These are current values, not a new scale.
 
@@ -80,18 +82,18 @@ Eyebrows are mono, `0.75rem`, weight 400, tracking `0.14em`, uppercase, in `--sl
 
 Vertical space is fluid. Examples from the same file: home hero padding `clamp(2.75rem, 6vw, 5.5rem)` on top, sections `clamp(4.25rem, 8vw, 7.25rem)`, interior pages `clamp(2rem, 4vw, 3.5rem)` on top. At 960px the home hero padding drops to `1.5rem 2rem` because the desktop crop is shorter.
 
-The header is sticky, `--header` is `4.75rem`, and a 1px `--brand-blue` rule sits on its bottom edge. Desktop links are Services, Work, Approach, and Insights, in ice at `1.05rem`, plus a copper “Let’s talk”. The current page gets an inset brand-blue underline. “Let’s talk” uses an ice underline instead, so the copper button does not grow a blue bar.
+The header is sticky, `--header` is `4.75rem`, and a 1px `--brand-blue` rule sits on its bottom edge. Desktop links are Services, Work, Approach, and Insights, in ice at `1.05rem`, plus a brand-orange “Let’s talk” with a navy label. The current page gets an inset brand-blue underline. “Let’s talk” uses an ice underline instead, so the orange button does not grow a blue bar.
 
-The mobile menu is `position: fixed` and, until placed, sits at `top: 100dvh` with `visibility: hidden`. When open, `client/src/components/Shell.tsx` sets `--nav-top` to the header’s bottom edge and adds `data-placed` so the panel becomes visible under the real header. Links there are Manrope 600 at `2.4rem`. The menu closes on Escape and when the viewport reaches 900px. Without JavaScript, `.nav-noscript` shows the same destinations in a wrapping row.
+The mobile menu is `position: fixed` and, until placed, sits at `top: 100dvh` with `visibility: hidden`. When open, `client/src/components/Shell.tsx` sets `--nav-top` to the header’s bottom edge and adds `data-placed` so the panel becomes visible under the real header. Links there are Archivo Narrow bold at `2.4rem`. The menu closes on Escape and when the viewport reaches 900px. Without JavaScript, `.nav-noscript` shows the same destinations in a wrapping row.
 
 ## Components
 
-- **Primary** (`.btn-deep`, header `.talk`): copper fill, white label, copper-hover fill. `.talk` is at least 44px tall. `.btn` is at least 48px.
+- **Primary** (`.btn-deep`, header `.talk`): brand-orange fill, navy label, lighter orange-hover fill. `.talk` is at least 44px tall. `.btn` is at least 48px.
 - **Secondary** (`.btn-line`): slate outline, slate label. Hover fills slate with ice text. Pressed filter chips do the same.
 - **Ghost** (`.btn-ghost`): ice outline and label for use on dark bands. Hover fills ice with slate text. `.btn-paper` is the ice-filled button on dark bands (slate label; hover fills white). It is not a paper color.
 - **Text links** (`.text-link`): slate, weight 600, no underline. Hover turns the label copper and, when motion is allowed, nudges the arrow 4px.
 - **Disabled**: `opacity: 0.55` and `cursor: not-allowed`.
-- **Services**: numbered rows, copper Manrope 600 index, title, copy, arrow. The whole row is one link.
+- **Services**: numbered rows, copper Archivo Narrow index, title, copy, arrow. The whole row is one link.
 - **Cases**: photograph in a 16/11 well (`.media`), pale teal behind the crop, mono uppercase caption, teal-deep tag with a `--line` border, then the title. `ProjectCard` in `client/src/components/chrome.tsx` uses a plain `p.caption` with no dot. The 0.45rem dot (`.sq`) is the home hero caption only, in `--copper-light` there. The case-study hero is 16/9. ACS CARES is the large home card (4/5 in that slot), with its own object position, not a fake device. Well Aware uses `--photo-matte` behind the image. The six files are `client/public/images/`. Alt text stays on the project record. Do not generate a picture and caption it as the client’s product. Rights are still open. See [docs/BACKLOG.md](docs/BACKLOG.md).
 - **FAQ**: question in an `h3`, answer in a visible paragraph. Not a disclosure widget.
 - **Contact**: fields are white with a `--slate-soft` border. The composer opens a `mailto:` draft or copies the brief. The status line says the mail app must send it. Nothing is stored here. The consultation form is the existing CrossComm form, opened in a new tab from a pale teal panel. A lead inbox is not wired. See [docs/BACKLOG.md](docs/BACKLOG.md).
