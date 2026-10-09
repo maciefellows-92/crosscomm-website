@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { Link, Outlet, useLocation } from "react-router";
 import { siteConfig } from "../site-config";
 import { useOrigins } from "../lib/origins";
+import { useReveal } from "../lib/reveal";
 import { useRouteDocument } from "../lib/route-document";
 import { FeedbackDialog } from "./FeedbackDialog";
 import { Logo, isCurrent, primaryNav } from "./chrome";
@@ -10,6 +11,7 @@ export function Shell() {
   useRouteDocument();
   const origins = useOrigins();
   const { pathname } = useLocation();
+  useReveal(pathname);
   const [menu, setMenu] = useState({ path: pathname, open: false });
   const open = menu.path === pathname && menu.open;
   const setOpen = useCallback((next: boolean | ((value: boolean) => boolean)) => {

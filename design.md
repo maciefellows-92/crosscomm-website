@@ -36,8 +36,11 @@ Tokens are the custom properties on `:root` in `client/src/styles.css`. Hex valu
 | `--brand-blue` | `#89b6d5` | Header rule, current-page underline, focus ring on dark chrome. Not small text on ice. |
 | `--danger` | `#7a1e12` | Over-limit counts and `.form-errors`. Kept distinct from copper. |
 | `--photo-matte` | `#123f4a` | Well Aware card well only (`.slug-well-aware .media`). |
+| `--slate-deep` | `#1b2831` | Body of the home hero agent panel (`.agent-steps`) only. |
 
 On dark slate, footer anchors use `--copper-light` and turn `--white` on hover. Header navigation links are `--ice`, not light copper. Primary buttons stay `--white` on copper and on copper hover. The feedback dialog forces its links back to copper, because it sits on ice inside the dark footer.
+
+The home hero band draws its grid and sweep line in brand blue at 9% and 55% opacity, and the agent panel border in brand blue at 28%. Those are decoration, not text.
 
 Two colors are not tokens: the belief-list rule `#9db8bc`, and the dialog backdrop `rgba(39, 55, 67, 0.72)` (slate at 72% opacity).
 
@@ -52,7 +55,7 @@ Self-hosted, first four lines of `client/src/styles.css`: Manrope latin 600 (`@f
 | Role | Rule | Size | Line height |
 | --- | --- | --- | --- |
 | Home hero title | `.display` | `clamp(3.25rem, 7vw, 6.875rem)` (52px to 110px) | 0.92 |
-| “Make it matter.” Roman, weight 600, copper. Not italic. | `.line-matter` | inherits `.display` | 0.92, inherited |
+| “Make it matter.” Roman, weight 600, copper. Not italic. In the dark home hero band it is `--copper-light`. | `.line-matter` | inherits `.display` | 0.92, inherited |
 | Other page titles | `.page-intro h1` | `clamp(3rem, 7vw, 5.75rem)` | 1.05 |
 | Service titles | `.service-intro h1` | `clamp(2.6rem, 4.4vw, 4.15rem)` | 1.05 |
 | Section titles | `.section-head h2`, `.band h2`, `.faqs h2`. Interior `h1` sizes are the rows above; `.page-intro h1` is overridden later in the stylesheet. | `clamp(2.4rem, 5vw, 4.25rem)` | 1.05 |
@@ -89,12 +92,21 @@ The mobile menu is `position: fixed` and, until placed, sits at `top: 100dvh` wi
 - **Text links** (`.text-link`): slate, weight 600, no underline. Hover turns the label copper and, when motion is allowed, nudges the arrow 4px.
 - **Disabled**: `opacity: 0.55` and `cursor: not-allowed`.
 - **Services**: numbered rows, copper Manrope 600 index, title, copy, arrow. The whole row is one link.
-- **Cases**: photograph in a 16/11 well (`.media`), pale teal behind the crop, mono uppercase caption, teal-deep tag with a `--line` border, then the title. `ProjectCard` in `client/src/components/chrome.tsx` uses a plain `p.caption` with no dot. The 0.45rem copper dot (`.sq`) is the home hero caption only. The home hero crop is 5/4, and 3/2 with a 280px cap from 960px. The case-study hero is 16/9. ACS CARES is the large home card (4/5 in that slot), with its own object position, not a fake device. Well Aware uses `--photo-matte` behind the image. The six files are `client/public/images/`. Alt text stays on the project record. Do not generate a picture and caption it as the client’s product. Rights are still open. See [docs/BACKLOG.md](docs/BACKLOG.md).
+- **Cases**: photograph in a 16/11 well (`.media`), pale teal behind the crop, mono uppercase caption, teal-deep tag with a `--line` border, then the title. `ProjectCard` in `client/src/components/chrome.tsx` uses a plain `p.caption` with no dot. The 0.45rem dot (`.sq`) is the home hero caption only, in `--copper-light` there. The case-study hero is 16/9. ACS CARES is the large home card (4/5 in that slot), with its own object position, not a fake device. Well Aware uses `--photo-matte` behind the image. The six files are `client/public/images/`. Alt text stays on the project record. Do not generate a picture and caption it as the client’s product. Rights are still open. See [docs/BACKLOG.md](docs/BACKLOG.md).
 - **FAQ**: question in an `h3`, answer in a visible paragraph. Not a disclosure widget.
 - **Contact**: fields are white with a `--slate-soft` border. The composer opens a `mailto:` draft or copies the brief. The status line says the mail app must send it. Nothing is stored here. The consultation form is the existing CrossComm form, opened in a new tab from a pale teal panel. A lead inbox is not wired. See [docs/BACKLOG.md](docs/BACKLOG.md).
 - **Feedback**: **Report a problem** prepares a note you can read, copy, download, or open as a GitHub draft. The dialog says it does not file the report. Do not describe a report as sent. Permission and intake changes belong to [docs/BACKLOG.md](docs/BACKLOG.md) and [docs/FEEDBACK.md](docs/FEEDBACK.md), not to a redesign in this file. The dialog is `min(42rem, calc(100% - 40px))`, ice background, `--line` border. Its backdrop is slate at 72% opacity. Choice labels are at least 44px tall. Over-limit text is `--danger` and `aria-invalid`.
 
-Hover motion, when the visitor has not asked for less motion, is a 500ms ease on photographs and the hero crop (scale 1.03 on card hover or focus) and a 4px arrow nudge. Reduced motion removes those transitions. Do not add a second animation that ignores that query.
+- **Home hero**: a full-width `.hero-band.band-forest` (slate, ice text) with a faint 56px brand-blue grid. Buttons are `.btn-deep` and `.btn-ghost`. The right column is `AgentRun` (`client/src/components/AgentRun.tsx`): a mono panel that plays an agent brief, three MCP tool calls, a note, and a finished plan. It is captioned “Illustration · an AI agent using MCP tools”. It is not a client project; do not attach a client name or invented results to it. Every step is in the prerendered HTML; the loop starts only after hydration, pauses off screen, and does not run when the visitor asks for less motion.
+
+Hover motion, when the visitor has not asked for less motion, is a 500ms ease on photographs and the hero crop (scale 1.03 on card hover or focus) and a 4px arrow nudge. Also inside the same `no-preference` query:
+
+- The hero headline lines, copy, and agent panel rise in once on load (800ms, staggered 0 to 380ms). A 1px brand-blue line sweeps down the hero every 9s.
+- Agent steps fade in one at a time. The current step shows a blinking block caret, and the status dot pulses while it runs.
+- Scroll reveal: blocks marked `data-reveal` fade and rise 1.5rem as they enter the viewport (700ms, plus `--i` × 70ms for staggered service rows). `useReveal` (`client/src/lib/reveal.ts`, called from `Shell`) only hides blocks that start below the fold, so prerendered content on screen never flashes. Print shows everything.
+- Service rows: the number and title shift 0.5rem right on hover or keyboard focus.
+
+Reduced motion removes all of it. Do not add a second animation that ignores that query.
 
 ## Accessibility
 

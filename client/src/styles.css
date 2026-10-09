@@ -18,6 +18,7 @@
   --brand-blue: #89b6d5;
   --danger: #7a1e12;
   --photo-matte: #123f4a;
+  --slate-deep: #1b2831;
   --display: "Manrope", "Segoe UI", sans-serif;
   --sans: "Source Sans 3", "Source Sans Pro", "Segoe UI", sans-serif;
   --mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
@@ -391,6 +392,160 @@ main h1,
   border-radius: 50%;
   background: var(--copper);
   flex: none;
+}
+
+/* Home hero: dark slate band with a faint signal grid and the agent illustration. */
+.hero-band {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.hero-band::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-image:
+    linear-gradient(to right, rgba(137, 182, 213, 0.09) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(137, 182, 213, 0.09) 1px, transparent 1px);
+  background-size: 56px 56px;
+  mask-image: linear-gradient(to bottom, #000 0%, rgba(0, 0, 0, 0.55) 70%, transparent 100%);
+}
+
+.hero-band::after {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  top: 0;
+  z-index: -1;
+  height: 1px;
+  background: linear-gradient(to right, transparent, rgba(137, 182, 213, 0.55) 30%, rgba(137, 182, 213, 0.55) 70%, transparent);
+  opacity: 0;
+}
+
+.hero-band .hero {
+  padding-block: clamp(2.75rem, 6vw, 5.5rem) clamp(3.5rem, 7vw, 6rem);
+}
+
+.hero-band .line-matter {
+  color: var(--copper-light);
+}
+
+.hero-band .deck {
+  color: var(--ice-deep);
+}
+
+.agent-run {
+  margin: 0;
+  min-width: 0;
+}
+
+.agent-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.6rem 0.9rem;
+  border: 1px solid rgba(137, 182, 213, 0.28);
+  border-bottom: 0;
+  background: var(--slate);
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--brand-blue);
+}
+
+.agent-dots {
+  display: inline-flex;
+  gap: 0.3rem;
+}
+
+.agent-dots span {
+  width: 0.45rem;
+  height: 0.45rem;
+  border-radius: 50%;
+  border: 1px solid rgba(137, 182, 213, 0.5);
+}
+
+.agent-title {
+  flex: 1;
+}
+
+.agent-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: var(--ice-deep);
+}
+
+.agent-status::before {
+  content: "";
+  width: 0.45rem;
+  height: 0.45rem;
+  border-radius: 50%;
+  background: var(--copper-light);
+}
+
+.agent-steps {
+  list-style: none;
+  margin: 0;
+  padding: 1rem 0.9rem 1.1rem;
+  display: grid;
+  gap: 0.6rem;
+  min-height: 15.5rem;
+  align-content: start;
+  border: 1px solid rgba(137, 182, 213, 0.28);
+  background: var(--slate-deep);
+  font-family: var(--mono);
+  font-size: 0.85rem;
+  line-height: 1.5;
+  color: var(--ice);
+}
+
+.agent-steps li {
+  display: grid;
+  grid-template-columns: 1.1rem 1fr;
+  gap: 0.4rem;
+}
+
+.agent-steps code {
+  font-family: inherit;
+  color: var(--brand-blue);
+}
+
+.step-mark {
+  color: var(--brand-blue);
+}
+
+.step-brief {
+  color: var(--ice);
+  font-weight: 400;
+}
+
+.step-note {
+  color: var(--ice-deep);
+}
+
+.step-done,
+.step-done .step-mark {
+  color: var(--copper-light);
+}
+
+.agent-run figcaption {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  margin: 0.75rem 0 0 0.15rem;
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ice-deep);
+}
+
+.agent-run .sq {
+  background: var(--copper-light);
 }
 
 .proof {
@@ -1469,6 +1624,118 @@ legend {
   .text-link:hover .arrow {
     transform: translateX(4px);
   }
+
+  /* Home hero entrance: each headline line rises in, then the copy and the agent panel follow. */
+  .hero-band .display .line,
+  .hero-band .hero-copy,
+  .hero-band .agent-run {
+    animation: rise-in 800ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  }
+
+  .hero-band .display .line-matter {
+    animation-delay: 120ms;
+  }
+
+  .hero-band .hero-copy {
+    animation-delay: 260ms;
+  }
+
+  .hero-band .agent-run {
+    animation-delay: 380ms;
+  }
+
+  .hero-band::after {
+    animation: signal-sweep 9s linear 1.2s infinite;
+  }
+
+  .agent-steps li {
+    transition: opacity 350ms ease, transform 350ms ease;
+  }
+
+  .agent-steps li.is-pending {
+    opacity: 0;
+    transform: translateY(0.35rem);
+  }
+
+  .agent-steps li.is-current > span:last-child::after {
+    content: "";
+    display: inline-block;
+    width: 0.5em;
+    height: 1em;
+    margin-left: 0.25em;
+    vertical-align: -0.15em;
+    background: var(--brand-blue);
+    animation: caret-blink 900ms steps(1) infinite;
+  }
+
+  .agent-status.is-running::before {
+    animation: status-pulse 1.2s ease-in-out infinite;
+  }
+
+  /* Scroll reveal. `useReveal` adds .reveal-pending only to blocks that start below the fold. */
+  [data-reveal] {
+    transition:
+      opacity 700ms ease,
+      transform 700ms cubic-bezier(0.2, 0.7, 0.2, 1);
+    transition-delay: calc(var(--i, 0) * 70ms);
+  }
+
+  .reveal-pending {
+    opacity: 0;
+    transform: translateY(1.5rem);
+  }
+
+  .service-rows .num,
+  .service-rows .row-title {
+    transition: transform 400ms cubic-bezier(0.2, 0.7, 0.2, 1), color 200ms ease;
+  }
+
+  .service-rows a:hover .num,
+  .service-rows a:hover .row-title,
+  .service-rows a:focus-visible .num,
+  .service-rows a:focus-visible .row-title {
+    transform: translateX(0.5rem);
+  }
+
+  @keyframes rise-in {
+    from {
+      opacity: 0;
+      transform: translateY(1.25rem);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  @keyframes signal-sweep {
+    0% {
+      top: 0;
+      opacity: 0;
+    }
+    10% {
+      opacity: 1;
+    }
+    90% {
+      opacity: 1;
+    }
+    100% {
+      top: 100%;
+      opacity: 0;
+    }
+  }
+
+  @keyframes caret-blink {
+    50% {
+      opacity: 0;
+    }
+  }
+
+  @keyframes status-pulse {
+    50% {
+      opacity: 0.35;
+    }
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -1481,5 +1748,12 @@ legend {
   *::after {
     animation: none !important;
     transition: none !important;
+  }
+}
+
+@media print {
+  .reveal-pending {
+    opacity: 1;
+    transform: none;
   }
 }
