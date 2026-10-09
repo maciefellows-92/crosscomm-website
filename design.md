@@ -2,7 +2,7 @@
 
 The working design reference for the CrossComm review site, based on the implementation as of 4 October 2026. Maintain it alongside changes to the site. This documents the review build; it is not a company-wide brand approval.
 
-Fonts and the navy and orange come from the CrossComm brand templates (Google Drive, CrossComm Branding / Final): Archivo Narrow bold for headings, Open Sans for body, Dark Navy `#272F39`, Orange `#F2994A`. The direction for this review build is an editorial technology studio on that brand: navy and ice fields, the original CrossComm wordmark, brand orange for primary actions with a deeper orange for text on light surfaces, and muted teal plus the original favicon blue as accents. That continues three choices already made for the build: keep the existing public logo, use a cool blue-grey field with those complements, and share the React/Vite and content-record architecture, rather than inventing a new one. CrossComm paths follow its own legacy URL inventory. Do not add purple gradients, glowing orbs, large orange panels, or stock dashboard charts.
+Fonts and the navy and orange come from the CrossComm brand templates (Google Drive, CrossComm Branding / Final): Archivo Narrow bold for headings, Open Sans for body, Dark Navy `#272F39`, Orange `#F2994A`. The direction for this review build is an editorial technology studio on that brand: navy and ice fields, the original CrossComm wordmark, brand orange for primary actions with a deeper orange for text on light surfaces, neutral mist for quiet bands, and the original favicon blue as a small accent on navy. That continues three choices already made for the build: keep the existing public logo, use a cool navy and grey field with those complements, and share the React/Vite and content-record architecture, rather than inventing a new one. CrossComm paths follow its own legacy URL inventory. Do not add purple gradients, glowing orbs, large orange panels, or stock dashboard charts.
 
 ## Mark
 
@@ -33,8 +33,7 @@ Tokens are the custom properties on `:root` in `client/src/styles.css`. Hex valu
 | `--orange` | `#f2994a` | Brand Orange fill for primary controls (`.btn-deep`, `.talk`), with a navy label. |
 | `--orange-hover` | `#f6b37a` | Hover fill for primary controls. |
 | `--white` | `#fcfdfe` | Footer link hover. Preview and code wells. |
-| `--teal-pale` | `#e1eef0` | Occasional panel and photo well. |
-| `--teal-deep` | `#265865` | Text on pale teal panels, and category tag labels (those tags also sit on ice). |
+| `--mist` | `#e8ecf0` | Neutral light band (`.band-mist`, the home Approach band), occasional panel, and photo well. Replaced the earlier pale teal so the palette stays navy, orange, and neutrals. |
 | `--brand-blue` | `#89b6d5` | Header rule, current-page underline, focus ring on dark chrome. Not small text on ice. |
 | `--danger` | `#7a1e12` | Over-limit counts and `.form-errors`. Kept distinct from copper. |
 | `--photo-matte` | `#123f4a` | Well Aware card well only (`.slug-well-aware .media`). |
@@ -44,9 +43,9 @@ On dark slate, footer anchors use `--copper-light` and turn `--white` on hover. 
 
 The home hero band draws its grid and sweep line in brand blue at 9% and 55% opacity, and the agent panel border in brand blue at 28%. Those are decoration, not text.
 
-Two colors are not tokens: the belief-list rule `#9db8bc`, and the dialog backdrop `rgba(39, 55, 67, 0.72)` (slate at 72% opacity).
+One color is not a token: the dialog backdrop `rgba(39, 55, 67, 0.72)` (slate at 72% opacity).
 
-The ratios below are WCAG contrast math for these hex pairs, computed when the brand colors were applied. They are not an axe or browser audit: slate on ice 12.36:1, slate-soft on ice 6.29:1, copper on ice 5.17:1, copper hover on ice 6.48:1, slate on orange 6.08:1, slate on orange hover 7.51:1, deep teal on pale teal 6.63:1, orange on slate 6.08:1, orange on slate-deep 7.28:1, brand blue on slate 6.26:1, copper on pale teal 4.77:1, danger on ice 9.49:1. Design targets are 4.5:1 for body text, 3:1 for large text, and 3:1 for focus indicators and other essential control boundaries. A pair meeting that math is not conformance.
+The ratios below are WCAG contrast math for these hex pairs, computed when the brand colors were applied. They are not an axe or browser audit: slate on ice 12.36:1, slate-soft on ice 6.29:1, copper on ice 5.17:1, copper hover on ice 6.48:1, slate on orange 6.08:1, slate on orange hover 7.51:1, slate on mist 11.4:1, slate-soft on mist 5.8:1, orange on slate 6.08:1, orange on slate-deep 7.28:1, brand blue on slate 6.26:1, copper on mist 4.77:1, danger on ice 9.49:1. Design targets are 4.5:1 for body text, 3:1 for large text, and 3:1 for focus indicators and other essential control boundaries. A pair meeting that math is not conformance.
 
 ## Type
 
@@ -68,7 +67,7 @@ Do not style a service or interior `h1` with `.display`. That class is the home 
 
 Reading measure is set in CSS, not by a global column: decks `38rem`, section heads `40rem`, section decks `36rem`, page intros `46rem`, service intros `64rem`, row copy `46rem`, FAQ answers `42rem`, band leads `38rem`, archive summaries `40rem`.
 
-Eyebrows are mono, `0.75rem`, weight 400, tracking `0.14em`, uppercase, in `--slate-soft`. On a dark band, `.eyebrow-on-dark` and the footer eyebrow use `--brand-blue`. The dialog eyebrow stays `--slate-soft` on ice. Selection is slate fill with ice text.
+Eyebrows are mono, `0.75rem`, weight 400, tracking `0.14em`, uppercase, in `--slate-soft`. On a dark band, `.eyebrow-on-dark` uses `--brand-blue`. Eyebrows are for section labels only; stat labels, card captions, and the footer do not use them. The dialog eyebrow stays `--slate-soft` on ice. Selection is slate fill with ice text.
 
 ## Layout
 
@@ -76,11 +75,11 @@ Eyebrows are mono, `0.75rem`, weight 400, tracking `0.14em`, uppercase, in `--sl
 
 | Breakpoint | What changes |
 | --- | --- |
-| `800px` and up | Proof row goes to four columns. Service rows sit on one line. Portfolio grid is three columns. Footer is four columns. |
+| `800px` and up | Proof row goes to four columns. Service rows sit on one line. Portfolio grid is three columns. Footer is three columns. Home FAQ is a two-column list under its heading. |
 | `900px` and up | Desktop nav replaces the menu button. Below that (`max-width: 899px`) the button shows. |
 | `960px` and up | Wider gutters and the desktop hero: two columns, shorter crop, large first case card. |
 
-Vertical space is fluid. Examples from the same file: home hero padding `clamp(2.75rem, 6vw, 5.5rem)` on top, sections `clamp(4.25rem, 8vw, 7.25rem)`, interior pages `clamp(2rem, 4vw, 3.5rem)` on top. At 960px the home hero padding drops to `1.5rem 2rem` because the desktop crop is shorter.
+Vertical space is fluid. Examples from the same file: home hero padding `clamp(2.75rem, 6vw, 5.5rem)` on top, sections `clamp(5rem, 10vw, 9rem)`, bands `clamp(5rem, 10vw, 8.5rem)`, interior pages `clamp(2rem, 4vw, 3.5rem)` on top. At 960px the home hero padding drops to `1.5rem 2rem` because the desktop crop is shorter.
 
 The header is sticky, `--header` is `4.75rem`, and a 1px `--brand-blue` rule sits on its bottom edge. Desktop links are Services, Work, Approach, and Insights, in ice at `1.05rem`, plus a brand-orange “Let’s talk” with a navy label. The current page gets an inset brand-blue underline. “Let’s talk” uses an ice underline instead, so the orange button does not grow a blue bar.
 
@@ -94,9 +93,12 @@ The mobile menu is `position: fixed` and, until placed, sits at `top: 100dvh` wi
 - **Text links** (`.text-link`): slate, weight 600, no underline. Hover turns the label copper and, when motion is allowed, nudges the arrow 4px.
 - **Disabled**: `opacity: 0.55` and `cursor: not-allowed`.
 - **Services**: numbered rows, copper Archivo Narrow index, title, copy, arrow. The whole row is one link.
-- **Cases**: photograph in a 16/11 well (`.media`), pale teal behind the crop, mono uppercase caption, teal-deep tag with a `--line` border, then the title. `ProjectCard` in `client/src/components/chrome.tsx` uses a plain `p.caption` with no dot. The 0.45rem dot (`.sq`) is the home hero caption only, in `--copper-light` there. The case-study hero is 16/9. ACS CARES is the large home card (4/5 in that slot), with its own object position, not a fake device. Well Aware uses `--photo-matte` behind the image. The six files are `client/public/images/`. Alt text stays on the project record. Do not generate a picture and caption it as the client’s product. Rights are still open. See [docs/BACKLOG.md](docs/BACKLOG.md).
-- **FAQ**: question in an `h3`, answer in a visible paragraph. Not a disclosure widget.
-- **Contact**: fields are white with a `--slate-soft` border. The composer opens a `mailto:` draft or copies the brief. The status line says the mail app must send it. Nothing is stored here. The consultation form is the existing CrossComm form, opened in a new tab from a pale teal panel. A lead inbox is not wired. See [docs/BACKLOG.md](docs/BACKLOG.md).
+- **Cases**: photograph in a 16/11 well (`.media`), mist behind the crop, category tags, title, summary. Cards carry no caption line; the image caption lives on the case-study page (`ProjectPage` figcaption). Tags are pill outlines: Open Sans 600 at `0.82rem`, slate on ice, `--line` border. The 0.45rem dot (`.sq`) is the home hero caption only, in `--copper-light` there. The case-study hero is 16/9. ACS CARES is the large home card (4/5 in that slot), with its own object position, not a fake device. Well Aware uses `--photo-matte` behind the image. The six files are `client/public/images/`. Alt text stays on the project record. Do not generate a picture and caption it as the client’s product. Rights are still open. See [docs/BACKLOG.md](docs/BACKLOG.md).
+- **FAQ**: question in an `h3`, answer in a visible paragraph. Not a disclosure widget. On the home page (`.home-faqs`) the heading sits above and the four answers run in two columns from 800px.
+- **Proof row** (home): Since 1998, Founder Don Shin, Offices Durham & Cleveland, Practices (the count of service records). Labels are plain Open Sans in `--slate-soft`, not mono.
+- **Footer**: three columns with no eyebrows. Logo, tagline, offices and founding line; site links; email, phone, and the report launcher. Links are brand orange (`--copper-light`) on navy.
+- **Service rows**: `5.5rem` number column and `1.75rem` row padding from 800px.
+- **Contact**: fields are white with a `--slate-soft` border. The composer opens a `mailto:` draft or copies the brief. The status line says the mail app must send it. Nothing is stored here. The consultation form is the existing CrossComm form, opened in a new tab from a mist panel. A lead inbox is not wired. See [docs/BACKLOG.md](docs/BACKLOG.md).
 - **Feedback**: **Report a problem** prepares a note you can read, copy, download, or open as a GitHub draft. The dialog says it does not file the report. Do not describe a report as sent. Permission and intake changes belong to [docs/BACKLOG.md](docs/BACKLOG.md) and [docs/FEEDBACK.md](docs/FEEDBACK.md), not to a redesign in this file. The dialog is `min(42rem, calc(100% - 40px))`, ice background, `--line` border. Its backdrop is slate at 72% opacity. Choice labels are at least 44px tall. Over-limit text is `--danger` and `aria-invalid`.
 
 - **Home hero**: a full-width `.hero-band.band-forest` (slate, ice text) with a faint 56px brand-blue grid. Buttons are `.btn-deep` and `.btn-ghost`. The right column is `AgentRun` (`client/src/components/AgentRun.tsx`): a mono panel that plays an agent brief, three MCP tool calls, a note, and a finished plan. It is captioned “Illustration · an AI agent using MCP tools”. It is not a client project; do not attach a client name or invented results to it. Every step is in the prerendered HTML; the loop starts only after hydration, pauses off screen, and does not run when the visitor asks for less motion.
@@ -114,7 +116,7 @@ Reduced motion removes all of it. Do not add a second animation that ignores tha
 
 This is the current behavior, not a conformance certificate.
 
-- Keyboard focus uses `:focus-visible`: 3px outline, 3px offset. Light surfaces use slate. Header, footer, mobile nav, and `.band-forest` start from brand blue. `.band-forest` then overrides the ring to ice. `.report-dialog` forces the ring back to slate on the ice dialog.
+- Keyboard focus uses `:focus-visible`: 3px outline, 3px offset. Light surfaces use slate. Header, footer, mobile nav, and `.band-forest` start from brand blue. `.band-forest` then overrides the ring to ice. `.report-dialog` forces the ring back to slate on the ice dialog. A page `h1` that receives focus on route change (`tabindex="-1"`) shows no ring: it is not a control, and the focus is for screen readers.
 - Targets of at least 44px are implemented on the header talk link, the menu button, filter chips, the report launcher, and dialog choice labels. Primary `.btn` controls are 48px.
 - Do not convey state by color alone. Current page uses an underline as well as color. Work filters set `aria-pressed` and hide or show projects; the fill and text color are not the non-color cue. Example: `aria-pressed="true"` on Web, with the status “1 project” and only that card shown. Form errors use text in `.form-errors` and `aria-invalid` on the feedback fields.
 - `prefers-reduced-motion: reduce` turns off smooth scroll, animations, and transitions, including the photo zoom.
@@ -156,7 +158,7 @@ This review build is `noindex`. `siteConfig.indexable` stays false, and the `X-R
 - Do not recolor the wordmark to work on ice. It is white. It belongs on `--slate`.
 - Do not use `--brand-blue` for small labels on `--ice`. It is an accent on dark surfaces.
 - Do not use `--copper-light` on ice. It is the footer link color on slate.
-- Category tags are 0.68rem, smaller than body text. Treat them as small text and preserve at least 4.5:1 contrast. They use deep teal on ice with the line border.
+- Category tags are 0.82rem, smaller than body text. Treat them as small text and preserve at least 4.5:1 contrast. They use slate on ice with the line border.
 - The feedback dialog is the only place that renders `.form-errors`. The contact composer does not validate into that list. It opens or copies a draft.
 - The footer tagline is the string in `client/src/site-config.ts`: “Independent thinking. Lasting impact.” It renders in `--ice-deep` on slate. The home eyebrow names Durham, North Carolina and Cleveland, Ohio. Do not invent a headcount or a client count.
 - The skip link sits at the top left, with ice text on a slate background, and only moves into view on focus. `main` is the target.

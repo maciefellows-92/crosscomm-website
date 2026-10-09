@@ -14,8 +14,7 @@
   --copper-light: #f2994a;
   --orange: #f2994a;
   --orange-hover: #f6b37a;
-  --teal-pale: #e1eef0;
-  --teal-deep: #265865;
+  --mist: #e8ecf0;
   --white: #fcfdfe;
   --brand-blue: #89b6d5;
   --danger: #7a1e12;
@@ -253,6 +252,11 @@ main h1,
   scroll-margin-top: 6rem;
 }
 
+/* Route changes move focus to the page heading for screen readers. It is not a control, so no ring. */
+main h1[tabindex="-1"]:focus {
+  outline: none;
+}
+
 .display {
   font-size: clamp(3.25rem, 7vw, 6.875rem);
   font-weight: 600;
@@ -371,7 +375,7 @@ main h1,
   aspect-ratio: 5 / 4;
   object-fit: cover;
   object-position: 64% 42%;
-  background: var(--teal-pale);
+  background: var(--mist);
 }
 
 .hero-figure figcaption,
@@ -567,10 +571,7 @@ main h1,
 }
 
 .proof-grid dt {
-  font-family: var(--mono);
-  font-size: 0.72rem;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
+  font-size: 0.95rem;
   color: var(--slate-soft);
 }
 
@@ -584,7 +585,7 @@ main h1,
 }
 
 .section {
-  padding-block: clamp(4.25rem, 8vw, 7.25rem);
+  padding-block: clamp(5rem, 10vw, 9rem);
 }
 
 .section-tight {
@@ -594,7 +595,7 @@ main h1,
 .section-head {
   display: grid;
   gap: 0.75rem;
-  margin-bottom: 1.5rem;
+  margin-bottom: clamp(2rem, 4vw, 3rem);
   max-width: 40rem;
 }
 
@@ -625,7 +626,7 @@ main h1,
     "copy copy copy";
   gap: 0.35rem 1rem;
   align-items: center;
-  padding: 1.35rem 0;
+  padding: 1.75rem 0;
   border-top: 1px solid var(--line);
   color: inherit;
   text-decoration: none;
@@ -720,7 +721,7 @@ main h1,
 
 .media {
   overflow: hidden;
-  background: var(--teal-pale);
+  background: var(--mist);
   aspect-ratio: 16 / 11;
 }
 
@@ -771,13 +772,13 @@ main h1,
 }
 
 .tags li {
-  font-family: var(--mono);
-  font-size: 0.68rem;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--teal-deep);
+  font-size: 0.82rem;
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--slate);
   border: 1px solid var(--line);
-  padding: 0.2rem 0.4rem;
+  border-radius: 999px;
+  padding: 0.2rem 0.65rem;
 }
 
 .section-more {
@@ -785,12 +786,12 @@ main h1,
 }
 
 .band {
-  padding-block: clamp(4rem, 8vw, 6.5rem);
+  padding-block: clamp(5rem, 10vw, 8.5rem);
 }
 
-.band-sage {
-  background: var(--teal-pale);
-  color: var(--teal-deep);
+.band-mist {
+  background: var(--mist);
+  color: var(--slate);
 }
 
 .band-forest {
@@ -829,7 +830,7 @@ main h1,
 
 .belief-list li {
   padding-top: 0.9rem;
-  border-top: 1px solid #9db8bc;
+  border-top: 1px solid var(--line);
   font-family: var(--display);
   font-weight: 600;
   font-size: clamp(1.35rem, 2vw, 1.75rem);
@@ -840,6 +841,11 @@ main h1,
 .faqs {
   display: grid;
   gap: 1.5rem;
+}
+
+.faq-list {
+  display: grid;
+  column-gap: clamp(2rem, 5vw, 4rem);
 }
 
 .faq {
@@ -991,7 +997,7 @@ main h1,
   aspect-ratio: 16 / 9;
   object-fit: cover;
   object-position: center;
-  background: var(--teal-pale);
+  background: var(--mist);
 }
 
 .chapters {
@@ -1201,7 +1207,7 @@ textarea {
 .existing-form {
   margin-top: 3rem;
   padding: 1.5rem;
-  background: var(--teal-pale);
+  background: var(--mist);
 }
 
 .existing-form p {
@@ -1297,6 +1303,12 @@ textarea {
 .tagline {
   color: var(--ice-deep);
   margin-top: 0.75rem;
+}
+
+.footer-meta {
+  margin-top: 1rem;
+  font-size: 0.95rem;
+  color: var(--ice-deep);
 }
 
 .site-footer .eyebrow {
@@ -1462,7 +1474,7 @@ legend {
   }
 
   .service-rows a {
-    grid-template-columns: 4.5rem minmax(12rem, 0.9fr) minmax(0, 1.4fr) auto;
+    grid-template-columns: 5.5rem minmax(12rem, 0.9fr) minmax(0, 1.4fr) auto;
     grid-template-areas: "num title copy arrow";
     align-items: baseline;
     gap: 1rem 1.5rem;
@@ -1486,7 +1498,15 @@ legend {
   }
 
   .footer-grid {
-    grid-template-columns: 1.3fr 1fr 1fr 1fr;
+    grid-template-columns: 1.4fr 1fr 1fr;
+  }
+
+  .home-faqs .faqs {
+    grid-template-columns: 1fr;
+  }
+
+  .home-faqs .faq-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
 }

@@ -143,20 +143,13 @@ export function Shell() {
           <div>
             <Logo />
             <p className="tagline">{siteConfig.tagline}</p>
-          </div>
-          <div>
-            <p className="eyebrow">Visit</p>
-            <ul className="plain-list">
-              {siteConfig.offices.map((office) => (
-                <li key={office.city}>
-                  {office.city}, {office.region}
-                </li>
-              ))}
-              <li>Founded {siteConfig.founded} by {siteConfig.founder}</li>
-            </ul>
+            <p className="footer-meta">
+              {siteConfig.offices.map((office) => `${office.city}, ${office.region}`).join(" · ")}
+              <br />
+              Founded {siteConfig.founded} by {siteConfig.founder}
+            </p>
           </div>
           <nav aria-label="Footer">
-            <p className="eyebrow">On this site</p>
             <ul className="plain-list">
               {primaryNav.map((item) => (
                 <li key={item.href}>
@@ -172,7 +165,6 @@ export function Shell() {
             </ul>
           </nav>
           <div>
-            <p className="eyebrow">Reach</p>
             <ul className="plain-list">
               <li>
                 <a href={`mailto:${siteConfig.email}`}>{siteConfig.email}</a>

@@ -46,12 +46,12 @@ export function HomePage() {
             <dd>Don Shin</dd>
           </div>
           <div>
-            <dt>Durham</dt>
-            <dd>North Carolina</dd>
+            <dt>Offices</dt>
+            <dd>Durham &amp; Cleveland</dd>
           </div>
           <div>
-            <dt>Cleveland</dt>
-            <dd>Ohio</dd>
+            <dt>Practices</dt>
+            <dd>{services.length}</dd>
           </div>
         </dl>
       </section>
@@ -99,7 +99,7 @@ export function HomePage() {
         </div>
       </section>
 
-      <section className="band band-sage">
+      <section className="band band-mist">
         <div className="wrap people" data-reveal>
           <div>
             <p className="eyebrow">Approach</p>
@@ -120,7 +120,7 @@ export function HomePage() {
         </div>
       </section>
 
-      <section className="section">
+      <section className="section home-faqs">
         <div className="wrap">
           <FaqList items={homeFaqs} />
         </div>
