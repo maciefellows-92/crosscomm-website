@@ -1,26 +1,28 @@
-@import "@fontsource/manrope/latin-600.css";
-@import "@fontsource/source-sans-3/latin-400.css";
-@import "@fontsource/source-sans-3/latin-600.css";
+@import "@fontsource/archivo-narrow/latin-700.css";
+@import "@fontsource/open-sans/latin-400.css";
+@import "@fontsource/open-sans/latin-600.css";
 @import "@fontsource/ibm-plex-mono/latin-400.css";
 
 :root {
   --ice: #f2f5f7;
   --ice-deep: #e3eaf0;
-  --slate: #273743;
+  --slate: #272f39;
   --slate-soft: #465d6e;
   --line: #cad5de;
-  --copper: #a64b2a;
-  --copper-hover: #84361c;
-  --copper-light: #d89570;
+  --copper: #9b5518;
+  --copper-hover: #854914;
+  --copper-light: #f2994a;
+  --orange: #f2994a;
+  --orange-hover: #f6b37a;
   --teal-pale: #e1eef0;
   --teal-deep: #265865;
   --white: #fcfdfe;
   --brand-blue: #89b6d5;
   --danger: #7a1e12;
   --photo-matte: #123f4a;
-  --slate-deep: #1b2831;
-  --display: "Manrope", "Segoe UI", sans-serif;
-  --sans: "Source Sans 3", "Source Sans Pro", "Segoe UI", sans-serif;
+  --slate-deep: #1b2129;
+  --display: "Archivo Narrow", "Arial Narrow", "Helvetica Neue", sans-serif;
+  --sans: "Open Sans", "Segoe UI", sans-serif;
   --mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
   --page: 1320px;
   --header: 4.75rem;
@@ -65,7 +67,7 @@ h3 {
   font-family: var(--display);
   font-weight: 600;
   line-height: 1.05;
-  letter-spacing: -0.03em;
+  letter-spacing: -0.01em;
   margin: 0;
 }
 
@@ -218,7 +220,7 @@ a:hover {
 .nav-desktop .talk:hover,
 .nav-noscript .talk,
 .nav-noscript .talk:hover {
-  color: var(--white);
+  color: var(--slate);
 }
 
 .talk {
@@ -227,15 +229,15 @@ a:hover {
   justify-content: center;
   min-height: 44px;
   padding: 0.45rem 0.95rem;
-  background: var(--copper);
-  color: var(--white);
+  background: var(--orange);
+  color: var(--slate);
   text-decoration: none;
   font-weight: 600;
 }
 
 .talk:hover {
-  background: var(--copper-hover);
-  color: var(--white);
+  background: var(--orange-hover);
+  color: var(--slate);
 }
 
 .nav-desktop .talk[aria-current="page"] {
@@ -255,7 +257,7 @@ main h1,
   font-size: clamp(3.25rem, 7vw, 6.875rem);
   font-weight: 600;
   line-height: 0.92;
-  letter-spacing: -0.04em;
+  letter-spacing: -0.01em;
 }
 
 .display .line {
@@ -314,13 +316,13 @@ main h1,
 }
 
 .btn-deep {
-  background: var(--copper);
-  color: var(--white);
+  background: var(--orange);
+  color: var(--slate);
 }
 
 .btn-deep:hover {
-  background: var(--copper-hover);
-  color: var(--white);
+  background: var(--orange-hover);
+  color: var(--slate);
 }
 
 .btn-line {
@@ -577,7 +579,7 @@ main h1,
   font-family: var(--display);
   font-size: clamp(1.7rem, 3vw, 2.6rem);
   font-weight: 600;
-  letter-spacing: -0.03em;
+  letter-spacing: -0.01em;
   line-height: 1.05;
 }
 
@@ -635,7 +637,7 @@ main h1,
   font-size: clamp(1.8rem, 3vw, 2.6rem);
   font-weight: 600;
   color: var(--copper);
-  letter-spacing: -0.04em;
+  letter-spacing: -0.01em;
   line-height: 1;
 }
 
@@ -832,7 +834,7 @@ main h1,
   font-weight: 600;
   font-size: clamp(1.35rem, 2vw, 1.75rem);
   line-height: 1.25;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.01em;
 }
 
 .faqs {
@@ -1068,7 +1070,7 @@ main h1,
   font-weight: 600;
   font-size: clamp(1.45rem, 2.5vw, 2rem);
   line-height: 1.25;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.01em;
 }
 
 .phases {
@@ -1138,7 +1140,7 @@ main h1,
   font-weight: 600;
   font-size: clamp(1.7rem, 3vw, 2.4rem);
   line-height: 1.15;
-  letter-spacing: -0.03em;
+  letter-spacing: -0.01em;
   margin-bottom: 0.4rem;
 }
 
@@ -1226,7 +1228,7 @@ textarea {
   font-weight: 600;
   font-size: clamp(6rem, 22vw, 14rem);
   line-height: 0.8;
-  letter-spacing: -0.06em;
+  letter-spacing: -0.01em;
   color: var(--copper);
 }
 
@@ -1252,7 +1254,7 @@ textarea {
   font-family: var(--display);
   font-weight: 600;
   font-size: 1.6rem;
-  letter-spacing: -0.03em;
+  letter-spacing: -0.01em;
 }
 
 .strip-inner a {
@@ -1284,7 +1286,7 @@ textarea {
 
 .report-dialog .btn-deep,
 .report-dialog .btn-deep:hover {
-  color: var(--white);
+  color: var(--slate);
 }
 
 .footer-grid {
@@ -1584,7 +1586,7 @@ legend {
     line-height: 1.15;
     color: var(--ice);
     text-decoration: none;
-    letter-spacing: -0.03em;
+    letter-spacing: -0.01em;
   }
 
   .nav-mobile .talk {
@@ -1592,7 +1594,7 @@ legend {
     align-self: flex-start;
     font-family: var(--sans);
     font-size: 1rem;
-    color: var(--white);
+    color: var(--slate);
   }
 
   .nav-noscript {
