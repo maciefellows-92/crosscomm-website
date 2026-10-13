@@ -688,7 +688,7 @@ main h1[tabindex="-1"]:focus {
 }
 
 .project-card h3 {
-  font-size: clamp(1.6rem, 2.5vw, 2.15rem);
+  font-size: clamp(1.45rem, 2vw, 1.8rem);
   margin-top: 0.35rem;
 }
 
@@ -722,7 +722,7 @@ main h1[tabindex="-1"]:focus {
 .media {
   overflow: hidden;
   background: var(--mist);
-  aspect-ratio: 16 / 11;
+  aspect-ratio: 3 / 2;
 }
 
 .media img {
@@ -1493,6 +1493,7 @@ legend {
     gap: 1.5rem;
   }
 
+  .home-work,
   .portfolio-grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
@@ -1535,18 +1536,6 @@ legend {
     aspect-ratio: 3 / 2;
     max-height: 280px;
     object-position: center 42%;
-  }
-
-  .home-work {
-    grid-template-columns: 1.15fr 0.85fr;
-  }
-
-  .home-work .project-card:first-child {
-    grid-row: 1 / span 2;
-  }
-
-  .home-work .project-card:first-child .media {
-    aspect-ratio: 4 / 5;
   }
 
   .phases {

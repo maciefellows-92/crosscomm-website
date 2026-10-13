@@ -75,9 +75,9 @@ Eyebrows are mono, `0.75rem`, weight 400, tracking `0.14em`, uppercase, in `--sl
 
 | Breakpoint | What changes |
 | --- | --- |
-| `800px` and up | Proof row goes to four columns. Service rows sit on one line. Portfolio grid is three columns. Footer is three columns. Home FAQ is a two-column list under its heading. |
+| `800px` and up | Proof row goes to four columns. Service rows sit on one line. Home work and portfolio grids are three columns. Footer is three columns. Home FAQ is a two-column list under its heading. |
 | `900px` and up | Desktop nav replaces the menu button. Below that (`max-width: 899px`) the button shows. |
-| `960px` and up | Wider gutters and the desktop hero: two columns, shorter crop, large first case card. |
+| `960px` and up | Wider gutters and the desktop hero: two columns. |
 
 Vertical space is fluid. Examples from the same file: home hero padding `clamp(2.75rem, 6vw, 5.5rem)` on top, sections `clamp(5rem, 10vw, 9rem)`, bands `clamp(5rem, 10vw, 8.5rem)`, interior pages `clamp(2rem, 4vw, 3.5rem)` on top. At 960px the home hero padding drops to `1.5rem 2rem` because the desktop crop is shorter.
 
@@ -93,7 +93,7 @@ The mobile menu is `position: fixed` and, until placed, sits at `top: 100dvh` wi
 - **Text links** (`.text-link`): slate, weight 600, no underline. Hover turns the label copper and, when motion is allowed, nudges the arrow 4px.
 - **Disabled**: `opacity: 0.55` and `cursor: not-allowed`.
 - **Services**: numbered rows, copper Archivo Narrow index, title, copy, arrow. The whole row is one link.
-- **Cases**: photograph in a 16/11 well (`.media`), mist behind the crop, category tags, title, summary. Cards carry no caption line; the image caption lives on the case-study page (`ProjectPage` figcaption). Tags are pill outlines: Open Sans 600 at `0.82rem`, slate on ice, `--line` border. The 0.45rem dot (`.sq`) is the home hero caption only, in `--copper-light` there. The case-study hero is 16/9. ACS CARES is the large home card (4/5 in that slot), with its own object position, not a fake device. Well Aware uses `--photo-matte` behind the image. The six files are `client/public/images/`. Alt text stays on the project record. Do not generate a picture and caption it as the client’s product. Rights are still open. See [docs/BACKLOG.md](docs/BACKLOG.md).
+- **Cases**: photograph in a 3/2 well (`.media`), mist behind the crop, category tags, title, summary. Cards carry no caption line; the image caption lives on the case-study page (`ProjectPage` figcaption). Tags are pill outlines: Open Sans 600 at `0.82rem`, slate on ice, `--line` border. The 0.45rem dot (`.sq`) is the home hero caption only, in `--copper-light` there. The case-study hero is 16/9. Home and portfolio both show the cards as three equal columns from 800px; no card is enlarged. ACS CARES keeps its own object position, not a fake device. Card titles are `clamp(1.45rem, 2vw, 1.8rem)`. Well Aware uses `--photo-matte` behind the image. The six files are `client/public/images/`. Alt text stays on the project record. Do not generate a picture and caption it as the client’s product. Rights are still open. See [docs/BACKLOG.md](docs/BACKLOG.md).
 - **FAQ**: question in an `h3`, answer in a visible paragraph. Not a disclosure widget. On the home page (`.home-faqs`) the heading sits above and the four answers run in two columns from 800px.
 - **Proof row** (home): Since 1998, Founder Don Shin, Offices Durham & Cleveland, Practices (the count of service records). Labels are plain Open Sans in `--slate-soft`, not mono.
 - **Footer**: three columns with no eyebrows. Logo, tagline, offices and founding line; site links; email, phone, and the report launcher. Links are brand orange (`--copper-light`) on navy.
@@ -162,7 +162,7 @@ This review build is `noindex`. `siteConfig.indexable` stays false, and the `X-R
 - The feedback dialog is the only place that renders `.form-errors`. The contact composer does not validate into that list. It opens or copies a draft.
 - The footer tagline is the string in `client/src/site-config.ts`: “Independent thinking. Lasting impact.” It renders in `--ice-deep` on slate. The home eyebrow names Durham, North Carolina and Cleveland, Ohio. Do not invent a headcount or a client count.
 - The skip link sits at the top left, with ice text on a slate background, and only moves into view on focus. `main` is the target.
-- Home and portfolio share `ProjectCard` but intentionally use different grid compositions. Review a shared-card change in both `.home-work` and `.portfolio-grid` while retaining their distinct compositions.
+- Home and portfolio share `ProjectCard` and the same three-column grid. Review a shared-card change in both `.home-work` and `.portfolio-grid`.
 
 ## Still open
 
